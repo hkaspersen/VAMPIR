@@ -18,7 +18,7 @@ Rscript amr_vir_sequence_typing.R -h
 Help screen:
 
 ```
-Usage: amr_vir_sequence_typing.R [options]
+Usage: amr_vir_sequence_typing.R [options] -o output_folder
 
 
 Options:
