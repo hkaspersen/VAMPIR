@@ -47,12 +47,16 @@ Options:
                 Location of acquired gene reports.
 
         -i INTRINSIC, --intrinsic=INTRINSIC
-                List of intrinsic genes of interest.
-                     Type 'all' for including all reported genes.
+                Comma separated list of intrinsic genes of interest, used with -u.
+                Type 'all' for including all reported genes.
+                Can partially match gene names, f. ex. "gyr" will match all gyr genes identified.
+                Example: -i gyr,par,mar
 
         -c ACQUIRED, --acquired=ACQUIRED
-                List of acquired genes of interest.
-                     Type 'all' for including all reported genes.
+                Comma separated list of acquired genes of interest, used with -a.
+                Type 'all' for including all reported genes.
+                Can partially match gene names, f. ex. "qnr" will match all qnr genes identified.
+                Example: -c blaTEM,oqxAB,qnr
 
         -v VIR, --vir=VIR
                 Location of ARIBA virulence reports.
@@ -65,8 +69,8 @@ Options:
 
         -o OUTPUT, --output=OUTPUT
                 Output directory location.
-                     One folder for each analysis will be created
-                     at given location
+                One folder for each analysis will be created
+                at given location
 
 ```
 
@@ -99,8 +103,7 @@ summary reports on which plasmid types were identified.
 # Output file descriptions
 
 - ***_report.txt**: A tab separated text file containing columns with 
-genes, 
-and 1/0 for present/absent for each isolate (row).
+genes, and 1/0 for present/absent for each isolate (row).
 
 - ***_flags.txt**: A tab separated text file containing the quality 
 control values (flags) for each gene/mutation found in the respective 
