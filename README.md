@@ -15,6 +15,45 @@ For help:
 ```
 Rscript amr_vir_sequence_typing.R -h
 ```
+Help screen:
+
+```
+Usage: amr_vir_sequence_typing.R [options]
+
+
+Options:
+        -h, --help
+                Show this help message and exit
+
+        -u MUT, --mut=MUT
+                Location of intrinsic gene reports.
+
+        -a ACQ, --acq=ACQ
+                Location of acquired gene reports.
+
+        -i INTRINSIC, --intrinsic=INTRINSIC
+                List of intrinsic genes of interest.
+                     Type 'all' for including all reported genes.
+
+        -c ACQUIRED, --acquired=ACQUIRED
+                List of acquired genes of interest.
+                     Type 'all' for including all reported genes.
+
+        -v VIR, --vir=VIR
+                Location of ARIBA virulence reports.
+
+        -m MLST, --mlst=MLST
+                Location of ARIBA MLST reports.
+
+        -p PLASMID, --plasmid=PLASMID
+                Location of ARIBA plasmid reports.
+
+        -o OUTPUT, --output=OUTPUT
+                Output directory location.
+                     One folder for each analysis will be created
+                     at given location
+
+```
 
 ## Tracks
 The user can specify five different tracks, depending on what they may 
