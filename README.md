@@ -5,6 +5,8 @@ This script takes reports from the software ARIBA
 basic statistics reports and visualizations based on user-defined 
 settings.
 
+Author: Håkon Kaspersen, Norwegian Veterinary Institute
+
 # Usage
 ```
 Rscript amr_vir_sequence_typing.R [options] -o output_folder
@@ -80,3 +82,35 @@ joining tree based on allele distances.
 - Plasmid typing analysis (-p)
 	+ This track takes plasmidFinder reports from ARIBA and gives 
 summary reports on which plasmid types were identified.
+
+# Output file descriptions
+
+- *_report.txt: A tab separated text file containing columns with genes, 
+and 1/0 for present/absent for each isolate (row).
+
+- *_flags.txt: A tab separated text file containing the quality control 
+values (flags) for each gene/mutation found in the respective report. 
+The column "flag_result" determines in the respective gene/mutation 
+passed quality control (1) or not (0). Note that all reported genes and 
+mutations are presented here.
+
+- *_stats.txt: A tab separated text file containing the summary 
+statistics of the respective analysis type. It presents the percentage 
+of isolates where the given gene is present, as well as a 95 % 
+confidence interval.
+
+- virulence_detailed_report.txt: A tab separated text file containing 
+the specific subtypes of virulence genes, rather than the grouped 
+virulence genes in virulence_summary_report.txt.
+
+- virulence_summary_report.txt: A tab separated text file containing the 
+grouped virulence gene results.
+
+- intrinsic_mut_report.txt: A tab separated text file containing the 
+detailed mutations found in specified intrinsic genes.
+
+- mlst_tree.svg: A figure presenting the phylogenetic tree based on 
+allele distances.
+
+- mlst_tree.newick: A newick-format phylogenetic tree based on allele 
+distances.
