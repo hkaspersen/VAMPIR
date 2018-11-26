@@ -25,7 +25,9 @@ suppressPackageStartupMessages(
     phangorn,
     ggtree,
     tibble,
-    purrr
+    purrr,
+    cluster,
+    ape
   )
 )
 
@@ -90,21 +92,8 @@ allele_matrix <- suppressWarnings(mlst_data %>%
   select(-test) %>%
   column_to_rownames("ref"))
 
-# Calculate distance matrix from sequence typing alleles
-d.mlst.distances <- matrix(0, ncol=nrow(allele_matrix), 
-                           nrow=nrow(allele_matrix))
-for (i in 1:(nrow(allele_matrix)-1)) {
-  for (j in (i+1):nrow(allele_matrix)){
-    d.mlst.distances[i,j] <- sum(
-      allele_matrix[i, ] != allele_matrix[j, ])
-    d.mlst.distances[j,i] <- sum(
-      allele_matrix[i, ] != allele_matrix[j, ])
-  }
-}
-
-# Create tree from distance matrix
-tree <- upgma(d.mlst.distances)
-
+# Calculate distance matrix from sequence typing alleles and create tree
+tree <- as.phylo(hclust(daisy(allele_matrix, metric = "gower")))
 tree$tip.label <- rownames(allele_matrix)
 
 p <- suppressWarnings(ggtree(tree) +
@@ -113,7 +102,7 @@ p <- suppressWarnings(ggtree(tree) +
               align = TRUE))
 
 # Save output
-ggsave(paste0(mlst_output, "NJTree_mlst.svg"),
+ggsave(paste0(mlst_output, "mlst_tree.svg"),
        p,
        device = "svg",
        dpi = 300,
@@ -125,3 +114,5 @@ write.table(mlst_report,
             paste0(mlst_output, "mlst_report.tsv"),
             sep = "\t",
             row.names = FALSE)
+
+write.tree(phy = tree, file = paste0(mlst_output,"mlst_tree.newick"))
