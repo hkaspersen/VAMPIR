@@ -1,5 +1,4 @@
-# Analysis of AMR- and virulence genes, plasmid typing and multilocus 
-sequence typing
+# Analysis of AMR- and virulence genes, plasmid typing and multilocus sequence typing
 
 This script takes reports from the software ARIBA 
 (https://github.com/sanger-pathogens/ariba) and creates summary reports, 
