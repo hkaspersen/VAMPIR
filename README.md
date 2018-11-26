@@ -74,56 +74,58 @@ Options:
 The user can specify five different tracks, depending on what they may 
 need. The following tracks are available:
 
-- Intrinsic AMR gene analysis (-u, genes: -i)
+- *Intrinsic AMR gene analysis* (-u, genes: -i)
 	+ This track analyses reports from the MEGAres database, and 
 gives reports based on which genes are specified by the user in -i.
 
-- Acquired AMR gene analysis (-a, genes: -c)
+- *Acquired AMR gene analysis* (-a, genes: -c)
 	+ This track analyses reports from the ResFinder database, and 
 gives reports based on which genes are specified by the user in -c.
 
-- Virulence gene analysis (-v)
+- *Virulence gene analysis* (-v)
 	+ This track analyses virulence reports from ARIBA and gives a 
 summary report and a detailed report on which virulence genes were 
 found.
 
-- Multilocus sequence typing analysis (-m)
+- *Multilocus sequence typing analysis* (-m)
 	+ This track takes summary reports on MLST from ARIBA and gives 
 a summary report on sequence types and alleles, as well as a neighbor 
 joining tree based on allele distances.
 
-- Plasmid typing analysis (-p)
+- *Plasmid typing analysis* (-p)
 	+ This track takes plasmidFinder reports from ARIBA and gives 
 summary reports on which plasmid types were identified.
 
 # Output file descriptions
 
-- *_report.txt: A tab separated text file containing columns with genes, 
+- **_report.txt*: A tab separated text file containing columns with 
+genes, 
 and 1/0 for present/absent for each isolate (row).
 
-- *_flags.txt: A tab separated text file containing the quality control 
+- **_flags.txt*: A tab separated text file containing the quality 
+control 
 values (flags) for each gene/mutation found in the respective report. 
 The column "flag_result" determines in the respective gene/mutation 
 passed quality control (1) or not (0). Note that all reported genes and 
 mutations are presented here.
 
-- *_stats.txt: A tab separated text file containing the summary 
+- **_stats.txt*: A tab separated text file containing the summary 
 statistics of the respective analysis type. It presents the percentage 
 of isolates where the given gene is present, as well as a 95 % 
 confidence interval.
 
-- virulence_detailed_report.txt: A tab separated text file containing 
+- *virulence_detailed_report.txt*: A tab separated text file containing 
 the specific subtypes of virulence genes, rather than the grouped 
 virulence genes in virulence_summary_report.txt.
 
-- virulence_summary_report.txt: A tab separated text file containing the 
-grouped virulence gene results.
+- *virulence_summary_report.txt*: A tab separated text file containing 
+the grouped virulence gene results.
 
-- intrinsic_mut_report.txt: A tab separated text file containing the 
+- *intrinsic_mut_report.txt*: A tab separated text file containing the 
 detailed mutations found in specified intrinsic genes.
 
-- mlst_tree.svg: A figure presenting the phylogenetic tree based on 
+- *mlst_tree.svg*: A figure presenting the phylogenetic tree based on 
 allele distances.
 
-- mlst_tree.newick: A newick-format phylogenetic tree based on allele 
+- *mlst_tree.newick*: A newick-format phylogenetic tree based on allele 
 distances.
