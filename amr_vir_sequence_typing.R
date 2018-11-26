@@ -77,7 +77,7 @@ if (!is.null(opt$mut)) {
     opt$mut,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript intrinsic_script.R",
+  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/intrinsic_script.R",
                opt$mut, 
                opt$out, 
                opt$intrinsic))
@@ -95,7 +95,7 @@ if (!is.null(opt$acq)) {
     opt$acq,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript acquired_script.R",
+  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/acquired_script.R",
                opt$acq, 
                opt$out, 
                opt$acquired))
@@ -109,7 +109,7 @@ if (!is.null(opt$vir)) {
     opt$vir,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript vir_script.R", opt$vir, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/vir_script.R", opt$vir, opt$out))
 }
 
 ## MLST track
@@ -119,7 +119,7 @@ if (!is.null(opt$mlst)) {
     opt$mlst,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript mlst_script.R", opt$mlst, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/mlst_script.R", opt$mlst, opt$out))
 }
 
 ## Plasmid typing track
@@ -129,5 +129,5 @@ if (!is.null(opt$plasmid)) {
     opt$plasmid,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript plasmid_script.R", opt$plasmid, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/plasmid_script.R", opt$plasmid, opt$out))
 }
