@@ -10,6 +10,12 @@ settings.
 Rscript amr_vir_sequence_typing.R [options] -o output_folder
 ```
 
+For help:
+
+```
+Rscript amr_vir_sequence_typing.R -h
+```
+
 ## Tracks
 The user can specify five different tracks, depending on what they may 
 need. The following tracks are available:
