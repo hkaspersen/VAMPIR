@@ -32,13 +32,17 @@ parser <- add_option(parser,
 parser <- add_option(parser,
                      c("-i", "--intrinsic"),
                      action = "store",
-                     help = "List of intrinsic genes of interest. 
-                     Type 'all' for including all reported genes.")
+                     help = "List of intrinsic genes of interest, used with -u. 
+                     Type 'all' for including all reported genes.
+                     Can partially match gene names, f. ex. 'gyr' will match all gyr genes identified.
+                     Example: -i gyr,par,mar")
 parser <- add_option(parser,
                      c("-c", "--acquired"),
                      action = "store",
-                     help = "List of acquired genes of interest.
-                     Type 'all' for including all reported genes.")
+                     help = "List of acquired genes of interest, used with -a.
+                     Type 'all' for including all reported genes.
+                     Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
+                     Example: -c blaTEM,oqxAB,qnr")
 parser <- add_option(parser,
                      c("-v", "--vir"),
                      action = "store",
@@ -69,7 +73,7 @@ if (is.null(opt$output)) {
 ## Intrinsic AMR genes track
 if (!is.null(opt$mut)) {
   if (is.null(opt$intrinsic)) {
-    print("Please specify genes of interest.")
+    print("Please specify genes of interest with -i.")
     stop()
   } else {
     print(paste0(
@@ -87,7 +91,7 @@ if (!is.null(opt$mut)) {
 ## Acquired AMR genes track
 if (!is.null(opt$acq)) {
   if (is.null(opt$acquired)) {
-    print("Please specify genes of interest.")
+    print("Please specify genes of interest with -c.")
     stop()
   } else {
     print(paste0(
