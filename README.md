@@ -41,10 +41,10 @@ Options:
                 Show this help message and exit
 
         -u MUT, --mut=MUT
-                Location of intrinsic gene reports.
+                Location of megaRes reports.
 
         -a ACQ, --acq=ACQ
-                Location of acquired gene reports.
+                Location of resFinder reports.
 
         -i INTRINSIC, --intrinsic=INTRINSIC
                 Comma separated list of intrinsic genes of interest, used with -u.

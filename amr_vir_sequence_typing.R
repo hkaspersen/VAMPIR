@@ -24,11 +24,11 @@ parser <- OptionParser(usage = "Usage: %prog [options] -o output_folder")
 parser <- add_option(parser,
                      c("-u", "--mut"),
                      action = "store",
-                     help = "Location of intrinsic gene reports.")
+                     help = "Location of megaRes reports.")
 parser <- add_option(parser,
                      c("-a", "--acq"),
                      action = "store",
-                     help = "Location of acquired gene reports.")
+                     help = "Location of resFinder reports.")
 parser <- add_option(parser,
                      c("-i", "--intrinsic"),
                      action = "store",
