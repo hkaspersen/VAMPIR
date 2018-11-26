@@ -8,6 +8,19 @@ settings.
 Author: Håkon Kaspersen, Norwegian Veterinary Institute
 
 # Usage
+Make sure that your .Rprofile file have the correct library path before 
+beginning. The .Rprofile file is located in your home folder, and you 
+get there by typing cd. Type in nano .Rprofile, and paste in the 
+following:
+
+```
+path <- "/work/projects/nn9305k/lib/R/"
+
+.libPaths(c(path, .libPaths()))
+```
+
+Usage:
+
 ```
 Rscript amr_vir_sequence_typing.R [options] -o output_folder
 ```
