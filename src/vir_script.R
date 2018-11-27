@@ -7,7 +7,7 @@
 # ------------------------- Parameters ----------------------------
 
 args <- commandArgs(trailingOnly = TRUE)
-report_loc <- "D:/test/test_reports/virulence_reports"
+report_loc <- args[1]
 output_loc <- args[2]
 
 # ------------------------ Load libraries -------------------------
