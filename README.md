@@ -41,10 +41,10 @@ Options:
                 Show this help message and exit
 
         -u MUT, --mut=MUT
-                Location of megaRes reports.
+                Directory of megaRes reports.
 
         -a ACQ, --acq=ACQ
-                Location of resFinder reports.
+                Directory of resFinder reports.
 
         -i INTRINSIC, --intrinsic=INTRINSIC
                 Comma separated list of intrinsic genes of interest, used with -u.
@@ -59,24 +59,22 @@ Options:
                 Example: -c blaTEM,oqxAB,qnr
 
         -v VIR, --vir=VIR
-                Location of ARIBA virulence reports.
+                Directory of ARIBA virulence reports.
 
         -m MLST, --mlst=MLST
-                Location of ARIBA MLST reports.
+                Directory of ARIBA MLST reports.
 
         -p PLASMID, --plasmid=PLASMID
-                Location of ARIBA plasmid reports.
+                Directory of ARIBA plasmid reports.
 
         -o OUTPUT, --output=OUTPUT
-                Output directory location.
+                Output directory.
                 One folder for each analysis will be created
                 at given location
 
 ```
 
 ## Tracks
-The user can specify five different tracks, depending on what they may 
-need. The following tracks are available:
 
 - **Intrinsic AMR gene analysis** (-u, genes: -i)
 	+ This track analyses reports from the MEGAres database, and 
@@ -100,7 +98,7 @@ joining tree based on allele distances.
 	+ This track takes plasmidFinder reports from ARIBA and gives 
 summary reports on which plasmid types were identified.
 
-# Output file descriptions
+# Output files
 
 - ***_report.txt**: A tab separated text file containing columns with 
 genes, and 1/0 for present/absent for each isolate (row).
@@ -117,7 +115,7 @@ of isolates where the given gene is present, as well as a 95 %
 confidence interval.
 
 - **virulence_detailed_report.txt**: A tab separated text file 
-containing the specific subtypes of virulence genes, rather than the grouped 
+containing the specific sub types of virulence genes, rather than the grouped 
 virulence genes in virulence_summary_report.txt.
 
 - **virulence_summary_report.txt**: A tab separated text file containing 
