@@ -22,6 +22,8 @@ path <- "/work/projects/nn9305k/lib/R/"
 Usage:
 
 ```
+module load R/3.5.0
+
 Rscript amr_vir_sequence_typing.R [options] -o output_folder
 ```
 
