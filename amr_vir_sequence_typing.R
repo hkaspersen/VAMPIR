@@ -24,11 +24,11 @@ parser <- OptionParser(usage = "Usage: %prog [options] -o output_folder")
 parser <- add_option(parser,
                      c("-u", "--mut"),
                      action = "store",
-                     help = "Location of megaRes reports.")
+                     help = "Directory of megaRes reports.")
 parser <- add_option(parser,
                      c("-a", "--acq"),
                      action = "store",
-                     help = "Location of resFinder reports.")
+                     help = "Directory of resFinder reports.")
 parser <- add_option(parser,
                      c("-i", "--intrinsic"),
                      action = "store",
@@ -46,19 +46,19 @@ parser <- add_option(parser,
 parser <- add_option(parser,
                      c("-v", "--vir"),
                      action = "store",
-                     help = "Location of ARIBA virulence reports.")
+                     help = "Directory of ARIBA virulence reports.")
 parser <- add_option(parser,
                      c("-m", "--mlst"),
                      action = "store",
-                     help = "Location of ARIBA MLST reports.")
+                     help = "Directory of ARIBA MLST reports.")
 parser <- add_option(parser,
                      c("-p", "--plasmid"),
                      action = "store",
-                     help = "Location of ARIBA plasmid reports.")
+                     help = "Directory of ARIBA plasmid reports.")
 parser <- add_option(parser,
                      c("-o", "--output"),
                      action = "store",
-                     help = "Output directory location. 
+                     help = "Output directory. 
                      One folder for each analysis will be created
                      at given location.")
 opt <- parse_args(parser)
