@@ -8,7 +8,8 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 report_loc <- args[1]
-output_loc <- args[2]
+vir_database <- args[2]
+output_loc <- args[3]
 
 # ------------------------ Load libraries -------------------------
 
@@ -62,10 +63,37 @@ get_vir_data <- function(filepath) {
   return(data)
 }
 
-# Corrects the gene names found in the "cluster" column
-fix_vir_names <- function(df) {
+# Corrects the gene names found in the "ref_name" column
+# for data from the virfinder database
+fix_virfinder_names <- function(df) {
   genes <- unique(df$ref_name)
   new_names <- gsub("^(.+_[0-9]+)_.+", "\\1", genes)
+  
+  gene_names <- c()
+  for (i in new_names) {
+    p <- paste(tolower(substring(i, 1,3)),
+               substring(i, 4),
+               sep = "", 
+               collapse = " ")
+    gene_names <- c(gene_names,p)
+  }
+  df2 <- data.frame(genes,gene_names) %>%
+    mutate(genes = as.character(genes)) %>%
+    rename(ref_name = genes)
+  
+  df <- df %>%
+    left_join(df2, by = "ref_name") %>%
+    mutate(gene_names = as.character(gene_names),
+           ref = gsub("(.*?)_vir_report.tsv", "\\1", ref))
+  
+  return(df)
+}
+
+# Corrects the gene names found in the "ref_name" column
+# for data from the vfdb database
+fix_vfdb_names <- function(df) {
+  genes <- unique(df$ref_name)
+  new_names <- sub("\\..+", "", genes)
   
   gene_names <- c()
   for (i in new_names) {
@@ -186,7 +214,13 @@ vir_output <- paste0(output_loc, "/vir/")
 vir_data <- get_vir_data(report_loc)
 
 # Clean data
-clean_vir_data <- fix_vir_names(vir_data)
+if (vir_database == "virfinder") {
+  clean_vir_data <- fix_virfinder_names(vir_data)
+}
+
+if (vir_database %in% c("vfdb", "vfdb_core")) {
+  clean_vir_data <- fix_vfdb_names(vir_data)
+}
 
 # Check flags
 vir_flags <- check_flags(clean_vir_data)
@@ -195,7 +229,7 @@ vir_flags <- check_flags(clean_vir_data)
 vir_table <- create_vir_table(clean_vir_data)
 vir_report <- create_vir_report(vir_table)
 vir_summary <- create_summary_report(vir_table)
-vir_quant <- calc_stats(vir_table)
+vir_quant_detailed <- calc_stats(vir_table)
 
 # Write to output folder
 write.table(vir_report,
