@@ -72,8 +72,10 @@ Options:
         -o OUTPUT, --output=OUTPUT
                 Output directory.
                 One folder for each analysis will be created
-                at given location
+                at given location.
 
+	--version
+		Print version info and exit.
 ```
 
 ## Tracks
