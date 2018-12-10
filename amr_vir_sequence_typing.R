@@ -61,12 +61,23 @@ parser <- add_option(parser,
                      help = "Output directory. 
                      One folder for each analysis will be created
                      at given location.")
+parser <- add_option(parser,
+                     "--version",
+                     action = "store_true",
+                     help = "Print version info.")
 opt <- parse_args(parser)
+
+# Print version info
+if (!is.null(opt$version)) {
+  vi <- R.Version()
+  print(paste0("RScript version 1.0.1 'A New Hope', run on ", vi$version.string))
+  quit()
+}
 
 # Check if output folder is specified
 if (is.null(opt$output)) {
   print("Please specify an output directory.")
-  stop()
+  quit()
 }
 
 ## ------------------- Tracks ----------------------
