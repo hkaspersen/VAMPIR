@@ -48,6 +48,11 @@ parser <- add_option(parser,
                      action = "store",
                      help = "Directory of ARIBA virulence reports.")
 parser <- add_option(parser,
+                     c("-r","--virgenes"),
+                     action = "store",
+                     help = "Virulence genes of interest, use with -v.
+                     Type 'all' for including all reported genes.")
+parser <- add_option(parser,
                      c("-d", "--database"),
                      action = "store",
                      help = "Virulence database used: virfinder, vfdb or vfdb_core")
@@ -126,6 +131,10 @@ if (!is.null(opt$vir)) {
   if (is.null(opt$database)) {
     print("Please specify virulence database used: virfinder, vfdb or vfdb_core.")
     quit()
+  }
+  if (is.null(opt$virgenes)) {
+    print("Please specify virulence genes.")
+    quit()
   } else {
     print(paste0(
       "Running virulence gene summary analysis. Reports location: ",
@@ -134,7 +143,11 @@ if (!is.null(opt$vir)) {
       opt$out,
       ". Virulence database: ",
       opt$database))
-    system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/vir_script.R", opt$vir, opt$database, opt$out)) 
+    system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/vir_script.R",
+                 opt$vir,
+                 opt$database,
+                 opt$virgenes,
+                 opt$out)) 
   }
 }
 
