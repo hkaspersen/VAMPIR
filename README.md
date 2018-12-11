@@ -62,6 +62,9 @@ Options:
 
         -v VIR, --vir=VIR
                 Directory of ARIBA virulence reports.
+                
+        -d DATABASE, --database=DATABASE
+                Virulence database used: virfinder, vfdb or vfdb_core.
 
         -m MLST, --mlst=MLST
                 Directory of ARIBA MLST reports.
@@ -74,8 +77,8 @@ Options:
                 One folder for each analysis will be created
                 at given location.
 
-	--version
-		Print version info and exit.
+      	--version
+		            Print version info and exit.
 ```
 
 ## Tracks
@@ -88,10 +91,11 @@ gives reports based on which genes are specified by the user in -i.
 	+ This track analyses reports from the ResFinder database, and 
 gives reports based on which genes are specified by the user in -c.
 
-- **Virulence gene analysis** (-v)
+- **Virulence gene analysis** (-v, database: -d)
 	+ This track analyses virulence reports from ARIBA and gives a 
 summary report and a detailed report on which virulence genes were 
-found.
+found. Note that only detailed reports will be generated when
+specifying the vfdb or vfdb_core databases.
 
 - **Multilocus sequence typing analysis** (-m)
 	+ This track takes summary reports on MLST from ARIBA and gives 
