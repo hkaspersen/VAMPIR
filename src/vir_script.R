@@ -9,7 +9,15 @@
 args <- commandArgs(trailingOnly = TRUE)
 report_loc <- args[1]
 vir_database <- args[2]
-output_loc <- args[3]
+vir_genes <- args[3]
+output_loc <- args[4]
+
+# adjust parameters for filtering
+if (grepl("all", vir_genes, ignore.case = TRUE) == TRUE) {
+  vir_genes <- "ALL"
+} else {
+  vir_genes <- unlist(strsplit(vir_genes, ",", fixed = TRUE))
+}
 
 # ------------------------ Load libraries -------------------------
 
@@ -153,6 +161,24 @@ create_vir_table <- function(df) {
   return(df)
 }
 
+# Filter genes in table based on user input
+filter_vir_table <- function(df) {
+  report_genes <- unique(df$gene)
+  grep_genes <- c()
+  for (gene in vir_genes) {
+    for (g in report_genes) {
+      if (grepl(gene, g, ignore.case = T) == TRUE) {
+        grep_genes <- c(grep_genes, g)
+      }
+    }
+  }
+  df <- df %>%
+    filter(gene %in% grep_genes) %>%
+    mutate(gene = gsub("_", "", gene),
+           gene = as.character(gene))
+  return(df)
+}
+
 # calculates percentages for presence/absence
 calc_stats <- function(df) {
   df <- df %>%
@@ -242,9 +268,14 @@ if (vir_database == "virfinder") {
   clean_vir_data <- fix_virfinder_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
-  vir_report <- create_vir_report(vir_table)
-  vir_summary <- create_summary_report(vir_table)
-  vir_quant_detailed <- calc_stats(vir_table)
+  if ("ALL" %in% vir_genes) {
+    vir_table_filtered <- vir_table
+  } else {
+    vir_table_filtered <- filter_vir_table(vir_table)
+  }
+  vir_report <- create_vir_report(vir_table_filtered)
+  vir_summary <- create_summary_report(vir_table_filtered)
+  vir_quant_detailed <- calc_stats(vir_table_filtered)
   vir_quant_summary <- calc_summary_stats(vir_summary)
   
   write.table(vir_report,
@@ -277,8 +308,13 @@ if (vir_database %in% c("vfdb", "vfdb_core")) {
   clean_vir_data <- fix_vfdb_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
-  vir_report <- create_vir_report(vir_table)
-  vir_quant_detailed <- calc_stats(vir_table)
+  if ("ALL" %in% vir_genes) {
+    vir_table_filtered <- vir_table
+  } else {
+    vir_table_filtered <- filter_vir_table(vir_table)
+  }
+  vir_report <- create_vir_report(vir_table_filtered)
+  vir_quant_detailed <- calc_stats(vir_table_filtered)
   
   write.table(vir_report,
               paste0(vir_output, "virulence_detailed_report.tsv"),
