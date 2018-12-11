@@ -48,6 +48,10 @@ parser <- add_option(parser,
                      action = "store",
                      help = "Directory of ARIBA virulence reports.")
 parser <- add_option(parser,
+                     c("-d", "--database"),
+                     action = "store",
+                     help = "Virulence database used: virfinder, vfdb or vfdb_core")
+parser <- add_option(parser,
                      c("-m", "--mlst"),
                      action = "store",
                      help = "Directory of ARIBA MLST reports.")
@@ -119,12 +123,19 @@ if (!is.null(opt$acq)) {
 
 ## Virulence gene track
 if (!is.null(opt$vir)) {
-  print(paste0(
-    "Running virulence gene summary analysis. Reports location: ",
-    opt$vir,
-    ". Output location: ",
-    opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/vir_script.R", opt$vir, opt$out))
+  if (is.null(opt$database)) {
+    print("Please specify virulence database used: virfinder, vfdb or vfdb_core.")
+    quit()
+  } else {
+    print(paste0(
+      "Running virulence gene summary analysis. Reports location: ",
+      opt$vir,
+      ". Output location: ",
+      opt$out,
+      ". Virulence database: ",
+      opt$database))
+    system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/vir_script.R", opt$vir, opt$database, opt$out)) 
+  }
 }
 
 ## MLST track
