@@ -178,6 +178,30 @@ calc_stats <- function(df) {
   return(df)
 }
 
+calc_summary_stats <- function(df) {
+  df <- df %>%
+    gather(gene, result_total, -ref) %>%
+    group_by(gene, result_total) %>%
+    count() %>%
+    ungroup() %>%
+    mutate(result_total = if_else(result_total == 1, 
+                                  "Present",
+                                  "Absent")) %>%
+    spread(result_total, n, fill = 0) %>%
+    mutate(Absent = if ("Absent" %in% names(.)) {
+      return(Absent)
+    } else {
+      return(0) # create absent column if not there
+    }) %>%
+    rowwise() %>%
+    mutate(
+      Total = Present + Absent,
+      Percent = round(Present / Total * 100, 1),
+      lwr = round(get_binCI(Present, Total)[1], 1),
+      upr = round(get_binCI(Present, Total)[2], 1)
+    )
+}
+
 # generate virulence gene report
 create_vir_report <- function(df) {
   df <- df %>%
@@ -200,7 +224,7 @@ create_summary_report <- function(df) {
     summarise_all(funs(func_paste)) %>%
     select(-id) %>%
     mutate_at(vars(-ref),
-              funs(ifelse(. == "0, 1", "1", "0")))
+              funs(ifelse(. == "0, 1", "1", .)))
   return(df)
 }
 
@@ -216,38 +240,58 @@ vir_data <- get_vir_data(report_loc)
 # Clean data
 if (vir_database == "virfinder") {
   clean_vir_data <- fix_virfinder_names(vir_data)
+  vir_flags <- check_flags(clean_vir_data)
+  vir_table <- create_vir_table(clean_vir_data)
+  vir_report <- create_vir_report(vir_table)
+  vir_summary <- create_summary_report(vir_table)
+  vir_quant_detailed <- calc_stats(vir_table)
+  vir_quant_summary <- calc_summary_stats(vir_summary)
+  
+  write.table(vir_report,
+              paste0(vir_output, "virulence_detailed_report.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_summary,
+              paste0(vir_output, "virulence_summary_report.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_quant_summary,
+              paste0(vir_output, "virulence_stats.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_quant_detailed,
+              paste0(vir_output, "virulence_stats_detailed.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_flags,
+              paste0(vir_output, "virulence_flags.tsv"),
+              sep = "\t",
+              row.names = FALSE)
 }
 
 if (vir_database %in% c("vfdb", "vfdb_core")) {
   clean_vir_data <- fix_vfdb_names(vir_data)
+  vir_flags <- check_flags(clean_vir_data)
+  vir_table <- create_vir_table(clean_vir_data)
+  vir_report <- create_vir_report(vir_table)
+  vir_quant_detailed <- calc_stats(vir_table)
+  
+  write.table(vir_report,
+              paste0(vir_output, "virulence_detailed_report.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_quant_detailed,
+              paste0(vir_output, "virulence_stats_detailed.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_flags,
+              paste0(vir_output, "virulence_flags.tsv"),
+              sep = "\t",
+              row.names = FALSE)
 }
-
-# Check flags
-vir_flags <- check_flags(clean_vir_data)
-
-# Wrangle
-vir_table <- create_vir_table(clean_vir_data)
-vir_report <- create_vir_report(vir_table)
-vir_summary <- create_summary_report(vir_table)
-vir_quant_detailed <- calc_stats(vir_table)
-
-# Write to output folder
-write.table(vir_report,
-            paste0(vir_output, "virulence_detailed_report.tsv"),
-            sep = "\t",
-            row.names = FALSE)
-
-write.table(vir_summary,
-            paste0(vir_output, "virulence_summary_report.tsv"),
-            sep = "\t",
-            row.names = FALSE)
-
-write.table(vir_quant,
-            paste0(vir_output, "virulence_stats.tsv"),
-            sep = "\t",
-            row.names = FALSE)
-
-write.table(vir_flags,
-            paste0(vir_output, "virulence_flags.tsv"),
-            sep = "\t",
-            row.names = FALSE)
