@@ -24,18 +24,18 @@ Usage:
 ```
 module load R/3.5.0
 
-Rscript amr_vir_sequence_typing.R [options] -o output_folder
+Rscript VAMPIR.R [options] -o output_folder
 ```
 
 For help:
 
 ```
-Rscript amr_vir_sequence_typing.R -h
+Rscript VAMPIR.R -h
 ```
 Help screen:
 
 ```
-Usage: amr_vir_sequence_typing.R [options] -o output_folder
+Usage: VAMPIR.R [options] -o output_folder
 
 
 Options:
@@ -50,22 +50,22 @@ Options:
 
         -i INTRINSIC, --intrinsic=INTRINSIC
                 List of intrinsic genes of interest, used with -u.
-                     Type 'all' for including all reported genes.
-                     Can partially match gene names, f. ex. 'gyr' will match all gyr genes identified.
-                     Example: -i gyr,par,mar
+                Type 'all' for including all reported genes.
+                Can partially match gene names, f. ex. 'gyr' will match all gyr genes identified.
+                Example: -i gyr,par,mar
 
         -c ACQUIRED, --acquired=ACQUIRED
                 List of acquired genes of interest, used with -a.
-                     Type 'all' for including all reported genes.
-                     Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
-                     Example: -c blaTEM,oqxAB,qnr
+                Type 'all' for including all reported genes.
+                Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
+                Example: -c blaTEM,oqxAB,qnr
 
         -v VIR, --vir=VIR
                 Directory of ARIBA virulence reports.
 
         -r VIRGENES, --virgenes=VIRGENES
                 Virulence genes of interest, use with -v.
-                     Type 'all' for including all reported genes.
+                Type 'all' for including all reported genes.
 
         -d DATABASE, --database=DATABASE
                 Virulence database used: virfinder, vfdb or vfdb_core
@@ -78,8 +78,8 @@ Options:
 
         -o OUTPUT, --output=OUTPUT
                 Output directory.
-                     One folder for each analysis will be created
-                     at given location.
+                One folder for each analysis will be created
+                at given location.
 
         --version
                 Print version info.
