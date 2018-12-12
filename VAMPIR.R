@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 ###########################################################
-# AMR, Virulence, Plasmid- and Multilocus sequence typing #
+######################### VAMPIR ##########################
 ###########################################################
 
 # This script takes multiple input from the software
@@ -79,7 +79,7 @@ opt <- parse_args(parser)
 # Print version info
 if (!is.null(opt$version)) {
   vi <- R.Version()
-  print(paste0("RScript version 1.1.0 'A New Hope', run on ", vi$version.string))
+  print(paste0("VAMPIR version 1.1.0 'A New Hope', run on ", vi$version.string))
   quit()
 }
 
@@ -101,7 +101,7 @@ if (!is.null(opt$mut)) {
     opt$mut,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/intrinsic_script.R",
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/intrinsic_script.R",
                opt$mut, 
                opt$out, 
                opt$intrinsic))
@@ -119,7 +119,7 @@ if (!is.null(opt$acq)) {
     opt$acq,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/acquired_script.R",
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
                opt$acquired))
@@ -143,7 +143,7 @@ if (!is.null(opt$vir)) {
       opt$out,
       ". Virulence database: ",
       opt$database))
-    system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/vir_script.R",
+    system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/vir_script.R",
                  opt$vir,
                  opt$database,
                  opt$virgenes,
@@ -158,7 +158,7 @@ if (!is.null(opt$mlst)) {
     opt$mlst,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/mlst_script.R", opt$mlst, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R", opt$mlst, opt$out))
 }
 
 ## Plasmid typing track
@@ -168,5 +168,5 @@ if (!is.null(opt$plasmid)) {
     opt$plasmid,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/amr_vir_sequence_typing/src/plasmid_script.R", opt$plasmid, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R", opt$plasmid, opt$out))
 }
