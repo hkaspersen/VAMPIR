@@ -1,4 +1,4 @@
-# Analysis of AMR- and virulence genes, plasmid typing and multilocus sequence typing
+# VAMPIR - Virulence, Amr, Mlst and Plasmid analysis In R
 
 This script takes reports from the software ARIBA 
 (https://github.com/sanger-pathogens/ariba) and creates summary reports, 
