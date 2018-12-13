@@ -108,10 +108,7 @@ check_flags <- function(df) {
   df <- df %>%
     select(ref, gene_names, flag, ref_ctg_change) %>%
     mutate(flag_result = flag %in% flag_selection,
-           flag_result = as.integer(flag_result),
-           ref = gsub("(.*?)\\_.+", "\\1", ref),
-           ref = sub("^\\d*-?(\\d{4}-.*)", "\\1", ref),
-           ref = sub("^(\\d{4}-\\d{2}-\\d*)-1", "\\1", ref)) %>%
+           flag_result = as.integer(flag_result)) %>%
     rename("gene" = gene_names)
   return(df)
 }

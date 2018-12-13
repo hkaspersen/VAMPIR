@@ -133,10 +133,7 @@ check_flags <- function(df) {
   df <- df %>%
     select(ref, gene_names, flag, ref_ctg_change) %>%
     mutate(flag_result = flag %in% flag_selection,
-           flag_result = as.integer(flag_result),
-           ref = gsub("(.*?)\\_.+", "\\1", ref),
-           ref = sub("^\\d*-?(\\d{4}-.*)", "\\1", ref),
-           ref = sub("^(\\d{4}-\\d{2}-\\d*)-1", "\\1", ref)) %>%
+           flag_result = as.integer(flag_result)) %>%
     rename("gene" = gene_names)
   return(df)
 }
@@ -268,28 +265,30 @@ if (vir_database == "virfinder") {
   clean_vir_data <- fix_virfinder_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
+  
   if ("ALL" %in% vir_genes) {
     vir_table_filtered <- vir_table
   } else {
     vir_table_filtered <- filter_vir_table(vir_table)
   }
+  
   vir_report <- create_vir_report(vir_table_filtered)
   vir_summary <- create_summary_report(vir_table_filtered)
   vir_quant_detailed <- calc_stats(vir_table_filtered)
   vir_quant_summary <- calc_summary_stats(vir_summary)
   
   write.table(vir_report,
-              paste0(vir_output, "virulence_detailed_report.tsv"),
+              paste0(vir_output, "virulence_report_detailed.tsv"),
               sep = "\t",
               row.names = FALSE)
   
   write.table(vir_summary,
-              paste0(vir_output, "virulence_summary_report.tsv"),
+              paste0(vir_output, "virulence_report_summary.tsv"),
               sep = "\t",
               row.names = FALSE)
   
   write.table(vir_quant_summary,
-              paste0(vir_output, "virulence_stats.tsv"),
+              paste0(vir_output, "virulence_stats_summary.tsv"),
               sep = "\t",
               row.names = FALSE)
   
@@ -308,16 +307,18 @@ if (vir_database %in% c("vfdb", "vfdb_core")) {
   clean_vir_data <- fix_vfdb_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
+  
   if ("ALL" %in% vir_genes) {
     vir_table_filtered <- vir_table
   } else {
     vir_table_filtered <- filter_vir_table(vir_table)
   }
+  
   vir_report <- create_vir_report(vir_table_filtered)
   vir_quant_detailed <- calc_stats(vir_table_filtered)
   
   write.table(vir_report,
-              paste0(vir_output, "virulence_detailed_report.tsv"),
+              paste0(vir_output, "virulence_report_detailed.tsv"),
               sep = "\t",
               row.names = FALSE)
   
