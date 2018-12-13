@@ -238,7 +238,7 @@ create_vir_report <- function(df) {
 
 create_summary_report <- function(df) {
   df <- df %>%
-    mutate(gene = sub("(.*?)_.+", "\\1", gene)) %>%
+    mutate(gene = gsub("[0-9]", "", gene)) %>%
     group_by(ref, gene, result_total) %>%
     summarise_all(funs(func_paste)) %>%
     group_by(ref) %>%
