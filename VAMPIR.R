@@ -79,7 +79,7 @@ opt <- parse_args(parser)
 # Print version info
 if (!is.null(opt$version)) {
   vi <- R.Version()
-  print(paste0("VAMPIR version 1.1.0 'A New Hope', run on ", vi$version.string))
+  print(paste0("VAMPIR version 1.1.2 'A New Hope', run on ", vi$version.string))
   quit()
 }
 
