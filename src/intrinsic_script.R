@@ -43,15 +43,21 @@ suppressPackageStartupMessages(
 # -------------------------- Functions ----------------------------
 
 # Collapses data frame to unique lines while ignoring NA's
-func_paste <- function(x) paste(unique(x[!is.na(x)]), collapse = ", ")
+func_paste <- function(x) paste(
+  unique(x[!is.na(x)]),
+  collapse = ", ")
 
 # Confidence interval function
-get_binCI <- function(x, n) as.numeric(setNames(binom.test(x,n)$conf.int*100,
-                                                c("lwr", "upr")))
+get_binCI <- function(x, n) as.numeric(
+  setNames(
+    binom.test(x,n)$conf.int*100,c("lwr", "upr")
+    )
+  )
 
 # Identifies filenames in input folder
 file_names <- function(filepath) {
-  files <- list.files(path = filepath, pattern = "amr_report.tsv")
+  files <- list.files(path = filepath, 
+                      pattern = "amr_report.tsv")
   return(files)
 }
 
@@ -70,7 +76,8 @@ get_ariba_data <- function(filepath) {
                       })
   
   names(data_list) <- files
-  data <- bind_rows(lapply(data_list, function(x) map(x, as.character)),
+  data <- bind_rows(lapply(data_list, function(x) map(x, 
+                                                      as.character)),
                     .id = "ref")
   return(data)
 }
@@ -84,7 +91,9 @@ fix_gene_names <- function(df) {
   
   gene_names <- c()
   for (i in new_names) {
-    p <- paste(tolower(substring(i, 1,3)), substring(i, 4), sep = "", 
+    p <- paste(tolower(substring(i, 1,3)),
+               substring(i, 4),
+               sep = "", 
                collapse = " ")
     gene_names <- c(gene_names,p)
   }
@@ -153,7 +162,8 @@ fix_gyr_par_results <- function(df) {
                                       gene == "gyrB" ~ gyrB_result,
                                       gene == "parC" ~ parC_result,
                                       gene == "parE" ~ parE_result)) %>%
-    mutate(result_total = ifelse(gene %in% c("gyrA","gyrB","parC","parE"), result_gyr_par, result)) %>%
+    mutate(result_total = ifelse(gene %in% c("gyrA","gyrB","parC","parE"),
+                                 result_gyr_par, result)) %>%
     select(-c(gyrA_result,
               gyrB_result,
               parC_result,
