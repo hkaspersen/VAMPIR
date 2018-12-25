@@ -79,7 +79,11 @@ opt <- parse_args(parser)
 # Print version info
 if (!is.null(opt$version)) {
   vi <- R.Version()
-  print(paste0("VAMPIR version 1.1.2 'A New Hope', run on ", vi$version.string))
+  print(paste0("VAMPIR ",
+               system('git describe --tags --abbrev=0',
+                      intern = TRUE),
+               " run on ",
+               vi$version.string))
   quit()
 }
 
@@ -158,7 +162,9 @@ if (!is.null(opt$mlst)) {
     opt$mlst,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R", opt$mlst, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
+               opt$mlst,
+               opt$out))
 }
 
 ## Plasmid typing track
@@ -168,5 +174,7 @@ if (!is.null(opt$plasmid)) {
     opt$plasmid,
     ". Output location: ",
     opt$out))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R", opt$plasmid, opt$out))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R",
+               opt$plasmid,
+               opt$out))
 }
