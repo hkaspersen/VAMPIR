@@ -95,7 +95,7 @@ gives reports based on which genes are specified by the user in -i.
 	+ This track analyses reports from the ResFinder database, and 
 gives reports based on which genes are specified by the user in -c.
 
-- **Virulence gene analysis** (-v, database: -d)
+- **Virulence gene analysis** (-v, database: -d, genes: -r)
 	+ This track analyses virulence reports from ARIBA and gives a 
 summary report and a detailed report on which virulence genes were 
 found. Note that only detailed reports will be generated when
