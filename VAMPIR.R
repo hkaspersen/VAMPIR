@@ -120,9 +120,9 @@ if (!is.null(opt$acq)) {
   } else {
     print(paste0(
       "Running acquired AMR gene summary analysis. Reports location: ",
-    opt$acq,
+    normalizePath(opt$acq, winslash = "/", mustWork = TRUE),
     ". Output location: ",
-    opt$out))
+    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
@@ -142,9 +142,9 @@ if (!is.null(opt$vir)) {
   } else {
     print(paste0(
       "Running virulence gene summary analysis. Reports location: ",
-      opt$vir,
+      normalizePath(opt$vir, winslash = "/", mustWork = TRUE),
       ". Output location: ",
-      opt$out,
+      normalizePath(opt$out, winslash = "/", mustWork = TRUE),
       ". Virulence database: ",
       opt$database))
     system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/vir_script.R",
@@ -159,9 +159,9 @@ if (!is.null(opt$vir)) {
 if (!is.null(opt$mlst)) {
   print(paste0(
     "Running MLST summary analysis. Reports location: ", 
-    opt$mlst,
+    normalizePath(opt$mlst, winslash = "/", mustWork = TRUE),
     ". Output location: ",
-    opt$out))
+    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
                opt$mlst,
                opt$out))
@@ -171,9 +171,9 @@ if (!is.null(opt$mlst)) {
 if (!is.null(opt$plasmid)) {
   print(paste0(
     "Running plasmid summary analysis. Reports location: ",
-    opt$plasmid,
+    normalizePath(opt$plasmid, winslash = "/", mustWork = TRUE),
     ". Output location: ",
-    opt$out))
+    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R",
                opt$plasmid,
                opt$out))
