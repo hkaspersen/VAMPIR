@@ -102,9 +102,9 @@ if (!is.null(opt$mut)) {
   } else {
     print(paste0(
       "Running intrinsic AMR gene summary analysis. Reports location: ",
-    opt$mut,
+    normalizePath(opt$mut, winslash = "/", mustWork = TRUE),
     ". Output location: ",
-    opt$out))
+    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/intrinsic_script.R",
                opt$mut, 
                opt$out, 
