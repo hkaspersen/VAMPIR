@@ -93,7 +93,7 @@ allele_matrix <- suppressWarnings(mlst_data %>%
   column_to_rownames("ref"))
 
 # Calculate distance matrix from sequence typing alleles and create tree
-tree <- as.phylo(hclust(daisy(allele_matrix, metric = "gower")))
+tree <- as.phylo(hclust(daisy(allele_matrix, metric = "gower"), method = "average"))
 tree$tip.label <- rownames(allele_matrix)
 
 p <- suppressWarnings(ggtree(tree) +
