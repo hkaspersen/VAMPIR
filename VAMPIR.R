@@ -61,7 +61,11 @@ parser <- add_option(parser,
                      action = "store",
                      help = "Directory of ARIBA MLST reports.")
 parser <- add_option(parser,
-                     c("-p", "--plasmid"),
+                     c("-p", "--plasmid_mob"),
+                     action = "store",
+                     help = "Directory of Mob-Suite plasmid reports.")
+parser <- add_option(parser,
+                     c("-q", "--plasmid_ariba"),
                      action = "store",
                      help = "Directory of ARIBA plasmid reports.")
 parser <- add_option(parser,
@@ -168,13 +172,24 @@ if (!is.null(opt$mlst)) {
 }
 
 ## Plasmid typing track
-if (!is.null(opt$plasmid)) {
+if (!is.null(opt$plasmid_mob)) {
   print(paste0(
     "Running plasmid summary analysis. Reports location: ",
-    normalizePath(opt$plasmid, winslash = "/", mustWork = TRUE),
+    normalizePath(opt$plasmid_mob, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R",
-               opt$plasmid,
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_mob.R",
+               opt$plasmid_mob,
+               opt$out))
+}
+
+if (!is.null(opt$plasmid_ariba)) {
+  print(paste0(
+    "Running plasmid summary analysis. Reports location: ",
+    normalizePath(opt$plasmid_ariba, winslash = "/", mustWork = TRUE),
+    ". Output location: ",
+    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
+  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_ariba.R",
+               opt$plasmid_ariba,
                opt$out))
 }
