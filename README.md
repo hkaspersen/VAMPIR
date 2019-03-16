@@ -72,8 +72,11 @@ Options:
 
         -m MLST, --mlst=MLST
                 Directory of ARIBA MLST reports.
+        
+        -p PLASMID, --plasmid_mob=PLASMID
+                Directory of Mob suite plasmid reports.
 
-        -p PLASMID, --plasmid=PLASMID
+        -q PLASMID, --plasmid_ariba=PLASMID
                 Directory of ARIBA plasmid reports.
 
         -o OUTPUT, --output=OUTPUT
@@ -106,9 +109,10 @@ specifying the vfdb or vfdb_core databases.
 a summary report on sequence types and alleles, as well as a neighbor 
 joining tree based on allele distances.
 
-- **Plasmid typing analysis** (-p)
-	+ This track takes plasmidFinder reports from ARIBA and gives 
-summary reports on which plasmid types were identified.
+- **Plasmid typing analysis** (-p, -q)
+	+ This track takes mob-suite plasmid reports (-p) or plasmidFinder
+reports from ARIBA (-q) and gives summary reports on which plasmid
+types were identified.
 
 # Output files
 
