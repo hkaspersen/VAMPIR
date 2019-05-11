@@ -136,7 +136,8 @@ dir.create(paste0(output_loc, "/plasmid/"), showWarnings = FALSE)
 plasmid_output <- paste0(output_loc, "/plasmid/")
 
 plasmid_data <- get_data(report_loc,
-                         "^report.tsv") %>%
+                         "^report.tsv",
+                         convert = TRUE) %>%
   fix_plasmid_names()
 
 plasmid_flags <- check_flags(plasmid_data)

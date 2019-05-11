@@ -40,7 +40,8 @@ dir.create(paste0(output_loc, "/plasmid/"), showWarnings = FALSE)
 plasmid_output <- paste0(output_loc, "/plasmid/")
 
 plasmid_data <- get_data(report_loc,
-                         "mobtyper_aggregate_report.txt")
+                         "mobtyper_aggregate_report.txt",
+                         convert = TRUE)
 
 clean_plasmid_data <- plasmid_data %>%
   mutate(ref = sub("/mobtyper_aggregate_report.txt", "", ref))

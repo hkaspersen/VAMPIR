@@ -46,7 +46,8 @@ mlst_output <- paste0(output_loc, "/mlst/")
 
 # Import and analyse data
 mlst_data <- get_data(report_loc,
-                      "mlst_summarized_results.tsv") %>%
+                      "mlst_summarized_results.tsv",
+                      convert = TRUE) %>%
   select(-ref)
 
 mlst_genes <- unlist(strsplit(names(mlst_data)[-1],

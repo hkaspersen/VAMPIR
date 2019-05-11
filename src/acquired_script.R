@@ -177,7 +177,8 @@ if (res_prog == "ARIBA") {
   amr_output <- paste0(output_loc, "/amr_ac/")
   
   ac_data <- get_data(ac_report_loc,
-                      "amr_report.tsv") %>%
+                      "amr_report.tsv",
+                      convert = TRUE) %>%
     fix_gene_names()
   
   ac_flags <- check_flags(ac_data)

@@ -238,7 +238,8 @@ amr_output <- paste0(output_loc, "/amr_in/")
 ## Intrinsic genes
 
 in_data <- get_data(in_report_loc,
-                    "amr_report.tsv") %>%
+                    "amr_report.tsv",
+                    convert = TRUE) %>%
   fix_gene_names()
 
 in_flags <- check_flags(in_data)

@@ -269,7 +269,8 @@ vir_output <- paste0(output_loc, "/vir/")
 if (vir_database == "virfinder") {
   # import data
   vir_data <- get_data(report_loc,
-                       "vir_report.tsv")
+                       "vir_report.tsv",
+                       convert = TRUE)
   
   clean_vir_data <- fix_virfinder_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
@@ -315,7 +316,8 @@ if (vir_database == "virfinder") {
 if (vir_database %in% c("vfdb", "vfdb_core")) {
   # Import data
   vir_data <- get_data(report_loc,
-                       "vir_report.tsv")
+                       "vir_report.tsv",
+                       convert = TRUE)
   
   clean_vir_data <- fix_vfdb_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
