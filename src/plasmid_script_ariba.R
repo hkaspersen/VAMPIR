@@ -12,16 +12,22 @@ output_loc <- args[2]
 
 # ------------------------ Load libraries -------------------------
 
-suppressPackageStartupMessages(if (!require("pacman")) 
-  install.packages("pacman"))
-suppressPackageStartupMessages(
-  pacman::p_load(
-    ggplot2, 
-    dplyr,
-    tidyr,
-    purrr
+packages <-
+  c(
+    "ggplot2",
+    "dplyr",
+    "tidyr",
+    "purrr",
+    "impoRt"
   )
-)
+
+invisible(lapply(packages, function(x)
+  library(
+    x,
+    character.only = T,
+    quietly = T,
+    warn.conflicts = FALSE
+  )))
 
 # -------------------------- Functions ----------------------------
 
@@ -33,34 +39,6 @@ func_paste <- function(x) paste(unique(x[!is.na(x)]),
 get_binCI <- function(x, n) as.numeric(
   setNames(binom.test(x,n)$conf.int*100,c("lwr", "upr"))
 )
-
-# Identifies filenames in input folder
-file_names_plasmid <- function(filepath) {
-  files <- list.files(path = filepath,
-                      pattern = "^report.tsv", recursive = T)
-  return(files)
-}
-
-# Import plasmid data from report.tsv
-get_plasmid_data <- function(filepath) {
-  files <- file_names_plasmid(filepath)
-  
-  data_list <- lapply(files,
-                      FUN = function(file) {
-                        read.delim(
-                          paste0(filepath, "/", file),
-                          stringsAsFactors = F,
-                          header = TRUE,
-                          sep = "\t"
-                        )
-                      })
-  
-  names(data_list) <- files
-  data <- bind_rows(lapply(
-    data_list, function(x) map(x, as.character)
-  ), .id = "ref")
-  return(data)
-}
 
 # Corrects the gene names found in the "cluster" column
 fix_plasmid_names <- function(df) {
@@ -162,7 +140,8 @@ calc_stats <- function(df) {
 dir.create(paste0(output_loc, "/plasmid/"), showWarnings = FALSE)
 plasmid_output <- paste0(output_loc, "/plasmid/")
 
-plasmid_data <- get_plasmid_data(report_loc) %>%
+plasmid_data <- get_data(report_loc,
+                         "^report.tsv") %>%
   fix_plasmid_names()
 
 plasmid_flags <- check_flags(plasmid_data)

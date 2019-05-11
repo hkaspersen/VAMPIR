@@ -20,25 +20,31 @@ if (grepl("all", in_genes, ignore.case = TRUE) == TRUE) {
 
 # ------------------------ Load libraries -------------------------
 
-suppressPackageStartupMessages(if (!require("pacman")) 
-  install.packages("pacman"))
-suppressPackageStartupMessages(
-  pacman::p_load(
-    ggplot2,
-    dplyr,
-    tidyr,
-    gridExtra,
-    grid,
-    forcats,
-    purrr,
-    stringr,
-    kableExtra,
-    knitr,
-    IRdisplay,
-    reprex,
-    svglite
-    )
-)
+packages <-
+  c(
+    "ggplot2",
+    "dplyr",
+    "tidyr",
+    "gridExtra",
+    "grid",
+    "forcats",
+    "purrr",
+    "stringr",
+    "kableExtra",
+    "knitr",
+    "IRdisplay",
+    "reprex",
+    "svglite",
+    "impoRt"
+  )
+
+invisible(lapply(packages, function(x)
+  library(
+    x,
+    character.only = T,
+    quietly = T,
+    warn.conflicts = FALSE
+  )))
 
 # -------------------------- Functions ----------------------------
 
@@ -53,34 +59,6 @@ get_binCI <- function(x, n) as.numeric(
     binom.test(x,n)$conf.int*100,c("lwr", "upr")
     )
   )
-
-# Identifies filenames in input folder
-file_names <- function(filepath) {
-  files <- list.files(path = filepath, 
-                      pattern = "amr_report.tsv")
-  return(files)
-}
-
-# Import ariba data from report.tsv from chosen database used in ariba
-get_ariba_data <- function(filepath) {
-  files <- file_names(filepath)
-  
-  data_list <- lapply(files,
-                      FUN = function(file) {
-                        read.delim(
-                          paste0(filepath, "/", file),
-                          stringsAsFactors = F,
-                          header = TRUE,
-                          sep = "\t"
-                        )
-                      })
-  
-  names(data_list) <- files
-  data <- bind_rows(lapply(data_list, function(x) map(x, 
-                                                      as.character)),
-                    .id = "ref")
-  return(data)
-}
 
 # Corrects the gene names found in the "cluster" column
 fix_gene_names <- function(df) {
@@ -198,11 +176,6 @@ calc_stats <- function(df) {
     ungroup() %>%
     mutate(result_total = if_else(result_total == 1, "Present", "Absent")) %>%
     spread(result_total, n, fill = 0) %>%
-    mutate(Absent = if ("Absent" %in% names(.)) {
-      return(Absent)
-    } else {
-      return(0) # adds Absent column with all 0 if all isolates have genes
-    }) %>%
     rowwise() %>%
     mutate(
       Total = Present + Absent,
@@ -264,7 +237,8 @@ amr_output <- paste0(output_loc, "/amr_in/")
 
 ## Intrinsic genes
 
-in_data <- get_ariba_data(in_report_loc) %>%
+in_data <- get_data(in_report_loc,
+                    "amr_report.tsv") %>%
   fix_gene_names()
 
 in_flags <- check_flags(in_data)
