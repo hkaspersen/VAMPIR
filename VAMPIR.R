@@ -44,7 +44,7 @@ parser <- add_option(parser,
                      Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
                      Example: -c blaTEM,oqxAB,qnr")
 parser <- add_option(parser,
-                     c("-a_p", "--acquired_program"),
+                     c("-y_p", "--acquired_program"),
                      action = "store",
                      help = "Specify which program was used to run acquired gene analysis, ARIBA or resfinder.")
 parser <- add_option(parser,
@@ -135,7 +135,7 @@ if (!is.null(opt$acq)) {
                opt$acq, 
                opt$out, 
                opt$acquired,
-               opt$a_p))
+               opt$y_p))
   }
 }
 
