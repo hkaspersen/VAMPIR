@@ -21,16 +21,22 @@ if (grepl("all", vir_genes, ignore.case = TRUE) == TRUE) {
 
 # ------------------------ Load libraries -------------------------
 
-suppressPackageStartupMessages(if (!require("pacman")) 
-  install.packages("pacman"))
-suppressPackageStartupMessages(
-  pacman::p_load(
-    ggplot2, 
-    dplyr,
-    tidyr,
-    purrr
+packages <-
+  c(
+    "ggplot2",
+    "dplyr",
+    "tidyr",
+    "purrr",
+    "impoRt"
   )
-)
+
+invisible(lapply(packages, function(x)
+  library(
+    x,
+    character.only = T,
+    quietly = T,
+    warn.conflicts = FALSE
+  )))
 
 # -------------------------- Functions ----------------------------
 
@@ -42,34 +48,6 @@ func_paste <- function(x) paste(unique(x[!is.na(x)]),
 get_binCI <- function(x, n) as.numeric(
   setNames(binom.test(x,n)$conf.int*100,c("lwr", "upr"))
   )
-
-# Identifies filenames in input folder
-file_names_vir <- function(filepath) {
-  files <- list.files(path = filepath,
-                      pattern = "vir_report.tsv")
-  return(files)
-}
-
-# Import virulence data from report.tsv
-get_vir_data <- function(filepath) {
-  files <- file_names_vir(filepath)
-  
-  data_list <- lapply(files,
-                      FUN = function(file) {
-                        read.delim(
-                          paste0(filepath, "/", file),
-                          stringsAsFactors = F,
-                          header = TRUE,
-                          sep = "\t"
-                        )
-                      })
-  
-  names(data_list) <- files
-  data <- bind_rows(lapply(
-    data_list, function(x) map(x, as.character)
-    ), .id = "ref")
-  return(data)
-}
 
 # Corrects the gene names found in the "ref_name" column
 # for data from the virfinder database
@@ -147,7 +125,7 @@ create_vir_table <- function(df) {
     filter(flag %in% flag_selection) %>%
     spread(gene_names, ref_ctg_change) %>%
     group_by(ref) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     mutate(ref = gsub("^(.*?)_vir_report.tsv$",
                       "\\1", ref)) %>%
     select(-c(id, flag)) %>%
@@ -155,6 +133,27 @@ create_vir_table <- function(df) {
     mutate(result_total = ifelse(result == "", 0, 1),
            result_total = as.character(result_total)) %>%
     select(-result)
+  return(df)
+}
+
+# Handle data from virfinder
+create_virfinder_table <- function(df) {
+  df <- df %>%
+    spread(`Virulence factor`, Identity) %>%
+    group_by(ref) %>%
+    summarise_all(list(func_paste)) %>%
+    mutate(ref = sub("/results_tab.tsv", "", ref)) %>%
+    select(-c(Database,
+              `Query / Template length`,
+              Contig,
+              `Position in contig`,
+              `Protein function`,
+              `Accession number`,
+              `<NA>`)) %>%
+    mutate_at(vars(-ref),
+              funs(ifelse(. == "", 0, 1))) %>%
+    gather(gene, value, -ref)
+  
   return(df)
 }
 
@@ -225,13 +224,32 @@ calc_summary_stats <- function(df) {
     )
 }
 
+calc_virfinder_stats <- function(df) {
+  df <- df %>%
+    group_by(gene, value) %>%
+    count() %>%
+    ungroup() %>%
+    mutate(value = if_else(value == 1, 
+                           "Present",
+                           "Absent")) %>%
+    spread(value, n, fill = 0) %>%
+    rowwise() %>%
+    mutate(
+      Total = Present + Absent,
+      Percent = round(Present / Total * 100, 1),
+      lwr = round(get_binCI(Present, Total)[1], 1),
+      upr = round(get_binCI(Present, Total)[2], 1)
+    )
+  return(df)
+}
+
 # generate virulence gene report
 create_vir_report <- function(df) {
   df <- df %>%
     group_by(ref) %>%
     mutate(id = 1:n()) %>%
     spread(gene, result_total) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-id)
   return(df)
 }
@@ -240,11 +258,11 @@ create_summary_report <- function(df) {
   df <- df %>%
     mutate(gene = gsub("[0-9]", "", gene)) %>%
     group_by(ref, gene, result_total) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     group_by(ref) %>%
     mutate(id = 1:n()) %>%
     spread(gene, result_total) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-id) %>%
     mutate_at(vars(-ref),
               funs(ifelse(. == "0, 1", "1", .)))
@@ -257,11 +275,12 @@ create_summary_report <- function(df) {
 dir.create(paste0(output_loc, "/vir/"), showWarnings = FALSE)
 vir_output <- paste0(output_loc, "/vir/")
 
-# Import data
-vir_data <- get_vir_data(report_loc)
-
 # Clean data
 if (vir_database == "virfinder") {
+  # import data
+  vir_data <- get_data(report_loc,
+                       "vir_report.tsv")
+  
   clean_vir_data <- fix_virfinder_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
@@ -304,6 +323,10 @@ if (vir_database == "virfinder") {
 }
 
 if (vir_database %in% c("vfdb", "vfdb_core")) {
+  # Import data
+  vir_data <- get_data(report_loc,
+                       "vir_report.tsv")
+  
   clean_vir_data <- fix_vfdb_names(vir_data)
   vir_flags <- check_flags(clean_vir_data)
   vir_table <- create_vir_table(clean_vir_data)
@@ -331,4 +354,38 @@ if (vir_database %in% c("vfdb", "vfdb_core")) {
               paste0(vir_output, "virulence_flags.tsv"),
               sep = "\t",
               row.names = FALSE)
+}
+
+if (vir_database == "virfinder_dtu") {
+  
+  vir_data <- get_data(report_loc,
+                       "results_tab.tsv")
+  
+  vir_table <- create_virfinder_table(vir_data)
+  
+  if ("ALL" %in% vir_genes) {
+    vir_table_filtered <- vir_table
+  } else {
+    vir_table_filtered <- filter_vir_table(vir_table)
+  }
+  
+  vir_quant <- calc_virfinder_stats(vir_table_filtered)
+  presence_absence <- spread(vir_table_filtered, gene, value)
+  
+  
+  write.table(presence_absence,
+              paste0(vir_output, "virfinder_results.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_quant,
+              paste0(vir_output, "virfinder_stats.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
+  write.table(vir_data,
+              paste0(vir_output, "virfinder_results_full.tsv"),
+              sep = "\t",
+              row.names = FALSE)
+  
 }
