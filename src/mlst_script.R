@@ -13,52 +13,29 @@ output_loc <- args[2]
 
 # ------------------------ Load libraries -------------------------
 
-suppressPackageStartupMessages(
-  if (!require("pacman")) install.packages("pacman"))
-suppressPackageStartupMessages(
-  pacman::p_load(
-    ggplot2,
-    dplyr,
-    tidyr,
-    stringr,
-    svglite,
-    phangorn,
-    ggtree,
-    tibble,
-    purrr,
-    cluster,
-    ape
+packages <-
+  c(
+    "ggplot2",
+    "dplyr",
+    "tidyr",
+    "stringr",
+    "svglite",
+    "phangorn",
+    "ggtree",
+    "tibble",
+    "purrr",
+    "cluster",
+    "ape",
+    "impoRt"
   )
-)
 
-# -------------------------- Functions ----------------------------
-
-file_names_mlst <- function(filepath) {
-  files <- list.files(path = filepath,
-                      pattern = "mlst_summarized_results.tsv")
-  return(files)
-}
-
-get_mlst_data <- function(filepath) {
-  files <- file_names_mlst(filepath)
-  
-  data_list <- lapply(files,
-                      FUN = function(file) {
-                        read.delim(
-                          paste0(filepath, "/", file),
-                          stringsAsFactors = F,
-                          header = TRUE,
-                          sep = "\t"
-                        )
-                      })
-  
-  names(data_list) <- files
-  data <- bind_rows(lapply(
-    data_list, function(x) map(x, as.character)
-    )
-  )
-  return(data)
-}
+invisible(lapply(packages, function(x)
+  library(
+    x,
+    character.only = T,
+    quietly = T,
+    warn.conflicts = FALSE
+  )))
 
 
 # -------------------------- Analysis ----------------------------
@@ -68,11 +45,15 @@ dir.create(paste0(output_loc, "/mlst/"), showWarnings = FALSE)
 mlst_output <- paste0(output_loc, "/mlst/")
 
 # Import and analyse data
-mlst_data <- get_mlst_data(report_loc)
+mlst_data <- get_data(report_loc,
+                      "mlst_summarized_results.tsv") %>%
+  select(-ref)
 
 mlst_genes <- unlist(strsplit(names(mlst_data)[-1],
-                              split = ".",
+                              split = " ",
                               fixed = TRUE))
+
+mlst_genes <- mlst_genes[-1]
 
 split_column <- names(mlst_data)[2]
 
@@ -93,7 +74,10 @@ allele_matrix <- suppressWarnings(mlst_data %>%
   column_to_rownames("ref"))
 
 # Calculate distance matrix from sequence typing alleles and create tree
-tree <- as.phylo(hclust(daisy(allele_matrix, metric = "gower"), method = "average"))
+tree <- as.phylo(hclust(daisy(allele_matrix,
+                              metric = "gower"),
+                        method = "average"))
+
 tree$tip.label <- rownames(allele_matrix)
 
 p <- suppressWarnings(ggtree(tree) +
