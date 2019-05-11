@@ -18,6 +18,12 @@ if (grepl("all", ac_genes, ignore.case = TRUE) == TRUE) {
 } else {
   ac_genes <- unlist(strsplit(ac_genes, ",", fixed = TRUE))
 }
+if (grepl("ariba", res_prog, ignore.case = TRUE) == TRUE) {
+  res_prog <- "ARIBA"
+} else {
+  res_prog <- "resfinder"
+}
+
 
 # ------------------------ Load libraries -------------------------
 
@@ -219,3 +225,6 @@ if (res_prog == "resfinder") {
               row.names = FALSE)
 }
 
+if (is.na(res_prog) == TRUE) {
+  print("Did you type the database selection correctly?")
+}
