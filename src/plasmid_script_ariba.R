@@ -119,11 +119,6 @@ calc_stats <- function(df) {
                                   "Present",
                                   "Absent")) %>%
     spread(result_total, n, fill = 0) %>%
-    mutate(Absent = if ("Absent" %in% names(.)) {
-      return(Absent)
-    } else {
-      return(0) # create absent column if not there
-    }) %>%
     rowwise() %>%
     mutate(
       Total = Present + Absent,
