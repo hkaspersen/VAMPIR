@@ -17,7 +17,7 @@
 ###########################################################
 
 # ------------------- Libraries --------------------
-suppressPackageStartupMessages(pacman::p_load(optparse))
+suppressPackageStartupMessages(library(optparse))
 parser <- OptionParser(usage = "Usage: %prog [options] -o output_folder")
 
 # Create command line options
