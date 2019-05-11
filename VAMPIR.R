@@ -44,6 +44,10 @@ parser <- add_option(parser,
                      Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
                      Example: -c blaTEM,oqxAB,qnr")
 parser <- add_option(parser,
+                     c("-a_p", "--acquired_program"),
+                     action = "store",
+                     help = "Specify which program was used to run acquired gene analysis, ARIBA or resfinder.")
+parser <- add_option(parser,
                      c("-v", "--vir"),
                      action = "store",
                      help = "Directory of ARIBA virulence reports.")
@@ -55,7 +59,7 @@ parser <- add_option(parser,
 parser <- add_option(parser,
                      c("-d", "--database"),
                      action = "store",
-                     help = "Virulence database used: virfinder, vfdb or vfdb_core")
+                     help = "Virulence database used: virfinder, vfdb, vfdb_core or virfinder_dtu (not ARIBA)")
 parser <- add_option(parser,
                      c("-m", "--mlst"),
                      action = "store",
@@ -130,7 +134,8 @@ if (!is.null(opt$acq)) {
   system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
-               opt$acquired))
+               opt$acquired,
+               opt$a_p))
   }
 }
 
