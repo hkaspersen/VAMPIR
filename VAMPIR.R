@@ -46,7 +46,7 @@ parser <- add_option(parser,
 parser <- add_option(parser,
                      c("-y", "--acquired_program"),
                      action = "store",
-                     help = "Specify which program was used to run acquired gene analysis, ARIBA or resfinder.")
+                     help = "Specify which program was used to run acquired gene analysis, aribaResfinder or dtuResfinder.")
 parser <- add_option(parser,
                      c("-v", "--vir"),
                      action = "store",
@@ -135,7 +135,7 @@ if (!is.null(opt$acq)) {
                opt$acq, 
                opt$out, 
                opt$acquired,
-               opt$y_p))
+               opt$acquired_program))
   }
 }
 
