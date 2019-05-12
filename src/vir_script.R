@@ -348,7 +348,7 @@ if (vir_database %in% c("vfdb", "vfdb_core")) {
               row.names = FALSE)
 }
 
-if (vir_database == "virfinder_dtu") {
+if (vir_database == "virfinderDtu") {
   
   vir_data <- get_data(report_loc,
                        "results_tab.tsv")
