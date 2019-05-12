@@ -59,6 +59,9 @@ Options:
                 Type 'all' for including all reported genes.
                 Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
                 Example: -c blaTEM,oqxAB,qnr
+                
+        -y, --acquired_program=ACQUIRED_PROGRAM
+                Specify which program was used to run acquired gene analysis, aribaResfinder or dtuResfinder.
 
         -v VIR, --vir=VIR
                 Directory of ARIBA virulence reports.
@@ -68,7 +71,7 @@ Options:
                 Type 'all' for including all reported genes.
 
         -d DATABASE, --database=DATABASE
-                Virulence database used: virfinder, vfdb or vfdb_core
+                Virulence database used: virfinder, vfdb, vfdb_core, or virfinderDtu (Non-ARIBA)
 
         -m MLST, --mlst=MLST
                 Directory of ARIBA MLST reports.
@@ -94,9 +97,11 @@ Options:
 	+ This track analyses reports from the MEGAres database, and 
 gives reports based on which genes are specified by the user in -i.
 
-- **Acquired AMR gene analysis** (-a, genes: -c)
+- **Acquired AMR gene analysis** (-a, genes: -c, program: -y)
 	+ This track analyses reports from the ResFinder database, and 
 gives reports based on which genes are specified by the user in -c.
+  + Specify which program was used to generate the reports with -y.
+  NOTE: Only one output file will be generated if dtuResfinder is specified.
 
 - **Virulence gene analysis** (-v, database: -d, genes: -r)
 	+ This track analyses virulence reports from ARIBA and gives a 
