@@ -176,7 +176,7 @@ calc_stats <- function(df) {
     ungroup() %>%
     mutate(result_total = if_else(result_total == 1, "Present", "Absent")) %>%
     spread(result_total, n, fill = 0) %>%
-    mutate(Absent = if ("Absent" %in% names(.)){return(Absent)}else{return(0)}) %>%
+    mutate(Absent = ifelse("Absent" %in% names(.), Absent, 0)) %>%
     rowwise() %>%
     mutate(
       Total = Present + Absent,
