@@ -89,7 +89,7 @@ create_plasmid_table <- function(df) {
     filter(flag %in% flag_selection) %>%
     spread(gene_names, ref_ctg_change) %>%
     group_by(ref) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-c(id, flag)) %>%
     gather(gene, result,-ref) %>%
     mutate(result_total = ifelse(result == "", 0, 1),
@@ -105,7 +105,7 @@ create_plasmid_report <- function(df) {
     group_by(ref) %>%
     mutate(id = 1:n()) %>%
     spread(gene, result_total) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-c(id, type))
   return(df)
 }

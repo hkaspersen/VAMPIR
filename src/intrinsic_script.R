@@ -194,7 +194,7 @@ create_in_table <- function(df) {
     mutate(id = 1:n()) %>%
     spread(gene_names, ref_ctg_change) %>%
     group_by(ref) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-c(id, flag)) %>%
     gather(gene, mut, -ref) %>%
     mutate(mut = ifelse(mut == "" | mut == "." | is.na(mut) == TRUE, 0, mut),
@@ -212,7 +212,7 @@ create_in_report <- function(df) {
     group_by(ref) %>%
     mutate(id = 1:n()) %>%
     spread(gene, result_total) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-c(id, type))
   return(df)
 }
@@ -224,7 +224,7 @@ create_mut_report <- function(df) {
     group_by(ref) %>%
     mutate(id = 1:n()) %>%
     spread(gene, mut) %>%
-    summarise_all(funs(func_paste)) %>%
+    summarise_all(list(func_paste)) %>%
     select(-c(id, type, result_total))
   return(df)
 }

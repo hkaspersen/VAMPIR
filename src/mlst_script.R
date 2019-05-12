@@ -60,15 +60,15 @@ split_column <- names(mlst_data)[2]
 
 allele_matrix <- suppressWarnings(mlst_data %>%
   mutate_at(vars(-1),
-            funs(trimws)) %>%
+            list(trimws)) %>%
   tidyr::separate(split_column, into = mlst_genes, extra = "merge") %>%
   rename("ref" = header) %>%
   { . ->> mlst_report } %>%
   select(-ST) %>%
   mutate_at(vars(-ref),
-            funs(sub("*", "", .))) %>%
+            list(sub("*", "", .))) %>%
   mutate_at(vars(-ref),
-            funs(as.integer(.))) %>% 
+            list(as.integer(.))) %>% 
   mutate(test = complete.cases(.)) %>%
   filter(test == TRUE) %>%
   select(-test) %>%

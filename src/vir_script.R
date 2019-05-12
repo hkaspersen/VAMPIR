@@ -151,7 +151,7 @@ create_virfinder_table <- function(df) {
               `Accession number`,
               `<NA>`)) %>%
     mutate_at(vars(-ref),
-              funs(ifelse(. == "", 0, 1))) %>%
+              list(~ifelse(. == "", 0, 1))) %>%
     gather(gene, value, -ref)
   
   return(df)
@@ -255,7 +255,7 @@ create_summary_report <- function(df) {
     summarise_all(list(func_paste)) %>%
     select(-id) %>%
     mutate_at(vars(-ref),
-              funs(ifelse(. == "0, 1", "1", .)))
+              list(~ifelse(. == "0, 1", "1", .)))
   return(df)
 }
 
