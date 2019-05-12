@@ -114,8 +114,6 @@ if (grepl("aribaResfinder", res_db, ignore.case = TRUE) == TRUE) {
     return(df)
   }
   
-  if ("top_speed" %in% names(.)){return(top_speed)}else{return(NA)}
-  
   # calculates percentage of present/absent mutations and genes
   calc_stats <- function(df) {
     df <- df %>%
@@ -126,7 +124,11 @@ if (grepl("aribaResfinder", res_db, ignore.case = TRUE) == TRUE) {
                                     "Present",
                                     "Absent")) %>%
       spread(result_total, n, fill = 0) %>%
-      mutate(Absent = if ("Absent" %in% names(.)){return(Absent)}else{return(0)}) %>%
+      mutate(Absent = if ("Absent" %in% names(.)) {
+        return(Absent)
+      } else{
+        return(0)
+      }) %>%
       rowwise() %>%
       mutate(
         Total = Present + Absent,
