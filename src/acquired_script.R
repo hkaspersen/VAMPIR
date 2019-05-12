@@ -10,7 +10,7 @@ args <- commandArgs(trailingOnly = TRUE)
 ac_report_loc <- args[1]
 output_loc <- args[2]
 ac_genes <- args[3]
-res_prog <- args[4]
+res_db <- args[4]
 
 # adjust parameters for filtering
 if (grepl("all", ac_genes, ignore.case = TRUE) == TRUE) {
@@ -18,12 +18,6 @@ if (grepl("all", ac_genes, ignore.case = TRUE) == TRUE) {
 } else {
   ac_genes <- unlist(strsplit(ac_genes, ",", fixed = TRUE))
 }
-if (grepl("ariba", res_prog, ignore.case = TRUE) == TRUE) {
-  res_prog <- "ARIBA"
-} else {
-  res_prog <- "resfinder"
-}
-
 
 # ------------------------ Load libraries -------------------------
 
@@ -53,7 +47,7 @@ invisible(lapply(packages, function(x)
     warn.conflicts = FALSE
   )))
 
-if (res_prog == "ARIBA") {
+if (grepl("aribaResfinder", res_db, ignore.case = TRUE) == TRUE) {
   # -------------------------- Functions ----------------------------
   
   # Collapses data frame to unique lines while ignoring NA's
@@ -166,7 +160,7 @@ if (res_prog == "ARIBA") {
       group_by(ref) %>%
       mutate(id = 1:n()) %>%
       spread(gene, result_total) %>%
-      summarise_all(funs(func_paste)) %>%
+      summarise_all(list(func_paste)) %>%
       select(-c(id, type))
     return(df)
   }
@@ -212,7 +206,7 @@ if (res_prog == "ARIBA") {
               row.names = FALSE)
 }
 
-if (res_prog == "resfinder") {
+if (grepl("dtuResfinder", res_db, ignore.case = TRUE) == TRUE) {
   # ------------------- Analysis ------------------------
   dir.create(paste0(output_loc, "/amr_ac/"), showWarnings = FALSE)
   amr_output <- paste0(output_loc, "/amr_ac/")
@@ -224,8 +218,4 @@ if (res_prog == "resfinder") {
               paste0(amr_output, "acquired_gene_report.tsv"),
               sep = "\t",
               row.names = FALSE)
-}
-
-if (is.na(res_prog) == TRUE) {
-  print("Did you type the database selection correctly?")
 }
