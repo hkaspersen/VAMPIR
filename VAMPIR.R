@@ -113,7 +113,7 @@ if (!is.null(opt$mut)) {
     normalizePath(opt$mut, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/intrinsic_script.R",
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/intrinsic_script.R",
                opt$mut, 
                opt$out, 
                opt$intrinsic))
@@ -131,7 +131,7 @@ if (!is.null(opt$acq)) {
     normalizePath(opt$acq, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
                opt$acquired,
@@ -156,7 +156,7 @@ if (!is.null(opt$vir)) {
       normalizePath(opt$out, winslash = "/", mustWork = TRUE),
       ". Virulence database: ",
       opt$database))
-    system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/vir_script.R",
+    system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/vir_script.R",
                  opt$vir,
                  opt$database,
                  opt$virgenes,
@@ -171,7 +171,7 @@ if (!is.null(opt$mlst)) {
     normalizePath(opt$mlst, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
                opt$mlst,
                opt$out))
 }
@@ -183,7 +183,7 @@ if (!is.null(opt$plasmid_mob)) {
     normalizePath(opt$plasmid_mob, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_mob.R",
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_mob.R",
                opt$plasmid_mob,
                opt$out))
 }
@@ -194,7 +194,7 @@ if (!is.null(opt$plasmid_ariba)) {
     normalizePath(opt$plasmid_ariba, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /work/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_ariba.R",
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_ariba.R",
                opt$plasmid_ariba,
                opt$out))
 }
