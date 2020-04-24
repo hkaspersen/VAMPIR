@@ -23,7 +23,6 @@ if (grepl("all", vir_genes, ignore.case = TRUE) == TRUE) {
 
 packages <-
   c(
-    "ggplot2",
     "dplyr",
     "tidyr",
     "purrr",
