@@ -37,16 +37,16 @@ parser <- add_option(parser,
                      Can partially match gene names, f. ex. 'gyr' will match all gyr genes identified.
                      Example: -i gyr,par,mar")
 parser <- add_option(parser,
+                     c("-q", "--gyrfix"),
+                     action = "store_true",
+                     help = "Add to filter the reported mutations in gyrA, gyrB, parC and parE to those in the QRDR only.")
+parser <- add_option(parser,
                      c("-c", "--acquired"),
                      action = "store",
                      help = "List of acquired genes of interest, used with -a.
                      Type 'all' for including all reported genes.
                      Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
                      Example: -c blaTEM,oqxAB,qnr")
-parser <- add_option(parser,
-                     c("-y", "--acquired_program"),
-                     action = "store",
-                     help = "Specify which program was used to run acquired gene analysis, aribaResfinder or dtuResfinder.")
 parser <- add_option(parser,
                      c("-v", "--vir"),
                      action = "store",
@@ -65,11 +65,7 @@ parser <- add_option(parser,
                      action = "store",
                      help = "Directory of ARIBA MLST reports.")
 parser <- add_option(parser,
-                     c("-p", "--plasmid_mob"),
-                     action = "store",
-                     help = "Directory of Mob-Suite plasmid reports.")
-parser <- add_option(parser,
-                     c("-q", "--plasmid_ariba"),
+                     c("-p", "--plasmid"),
                      action = "store",
                      help = "Directory of ARIBA plasmid reports.")
 parser <- add_option(parser,
@@ -115,8 +111,9 @@ if (!is.null(opt$mut)) {
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/intrinsic_script.R",
                opt$mut, 
-               opt$out, 
-               opt$intrinsic))
+               opt$out,
+               opt$intrinsic,
+               opt$gyrfix))
   }
 }
 
@@ -134,8 +131,7 @@ if (!is.null(opt$acq)) {
   system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
-               opt$acquired,
-               opt$acquired_program))
+               opt$acquired))
   }
 }
 
@@ -177,24 +173,13 @@ if (!is.null(opt$mlst)) {
 }
 
 ## Plasmid typing track
-if (!is.null(opt$plasmid_mob)) {
+if (!is.null(opt$plasmid)) {
   print(paste0(
     "Running plasmid summary analysis. Reports location: ",
-    normalizePath(opt$plasmid_mob, winslash = "/", mustWork = TRUE),
+    normalizePath(opt$plasmid, winslash = "/", mustWork = TRUE),
     ". Output location: ",
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_mob.R",
-               opt$plasmid_mob,
-               opt$out))
-}
-
-if (!is.null(opt$plasmid_ariba)) {
-  print(paste0(
-    "Running plasmid summary analysis. Reports location: ",
-    normalizePath(opt$plasmid_ariba, winslash = "/", mustWork = TRUE),
-    ". Output location: ",
-    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script_ariba.R",
-               opt$plasmid_ariba,
+  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R",
+               opt$plasmid,
                opt$out))
 }
