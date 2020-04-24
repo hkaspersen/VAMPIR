@@ -53,15 +53,15 @@ Options:
                 Type 'all' for including all reported genes.
                 Can partially match gene names, f. ex. 'gyr' will match all gyr genes identified.
                 Example: -i gyr,par,mar
+                
+        -q, --gyrfix
+                Add to filter the reported mutations in gyrA, gyrB, parC, and parE to those in the QRDR only.
 
         -c ACQUIRED, --acquired=ACQUIRED
                 List of acquired genes of interest, used with -a.
                 Type 'all' for including all reported genes.
                 Can partially match gene names, f. ex. 'qnr' will match all qnr genes identified.
                 Example: -c blaTEM,oqxAB,qnr
-                
-        -y, --acquired_program=ACQUIRED_PROGRAM
-                Specify which program was used to run acquired gene analysis, aribaResfinder or dtuResfinder.
 
         -v VIR, --vir=VIR
                 Directory of ARIBA virulence reports.
@@ -71,15 +71,12 @@ Options:
                 Type 'all' for including all reported genes.
 
         -d DATABASE, --database=DATABASE
-                Virulence database used: virfinder, vfdb, vfdb_core, or virfinderDtu (Non-ARIBA)
+                Virulence database used: virfinder, vfdb, or vfdb_core
 
         -m MLST, --mlst=MLST
                 Directory of ARIBA MLST reports.
         
-        -p PLASMID, --plasmid_mob=PLASMID
-                Directory of Mob suite plasmid reports.
-
-        -q PLASMID, --plasmid_ariba=PLASMID
+        -p PLASMID, --plasmid=PLASMID
                 Directory of ARIBA plasmid reports.
 
         -o OUTPUT, --output=OUTPUT
@@ -93,15 +90,16 @@ Options:
 
 ## Tracks
 
-- **Intrinsic AMR gene analysis** (-u, genes: -i)
+- **Intrinsic AMR gene analysis** (-u, genes: -i, filter: -q)
 	+ This track analyses reports from the MEGAres database, and 
 gives reports based on which genes are specified by the user in -i.
+Filters mutations reported in gyrA, gyrB, parC, and parE to only
+those inside the quinolone resistance determining region (QRDR)
+with -q.
 
-- **Acquired AMR gene analysis** (-a, genes: -c, program: -y)
+- **Acquired AMR gene analysis** (-a, genes: -c)
 	+ This track analyses reports from the ResFinder database, and 
 gives reports based on which genes are specified by the user in -c.
-  + Specify which program was used to generate the reports with -y.
-  NOTE: Only one output file will be generated if dtuResfinder is specified.
 
 - **Virulence gene analysis** (-v, database: -d, genes: -r)
 	+ This track analyses virulence reports from ARIBA and gives a 
@@ -114,10 +112,9 @@ specifying the vfdb or vfdb_core databases.
 a summary report on sequence types and alleles, as well as a neighbor 
 joining tree based on allele distances.
 
-- **Plasmid typing analysis** (-p, -q)
-	+ This track takes mob-suite plasmid reports (-p) or plasmidFinder
-reports from ARIBA (-q) and gives summary reports on which plasmid
-types were identified.
+- **Plasmid typing analysis** (-p)
+	+ This track plasmidFinder reports from ARIBA (-p) and gives summary 
+reports on which plasmid types were identified.
 
 # Output files
 
