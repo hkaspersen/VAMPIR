@@ -14,7 +14,7 @@ get there by typing cd. Type in nano .Rprofile, and paste in the
 following:
 
 ```
-path <- "/work/projects/nn9305k/lib/R/"
+path <- "/cluster/projects/nn9305k/lib/R/"
 
 .libPaths(c(path, .libPaths()))
 ```
@@ -22,7 +22,7 @@ path <- "/work/projects/nn9305k/lib/R/"
 Usage:
 
 ```
-module load R/3.5.0
+module load R/3.6.0-foss-2019a
 
 Rscript VAMPIR.R [options] -o output_folder
 ```
