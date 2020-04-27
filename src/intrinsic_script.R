@@ -41,7 +41,7 @@ suppressPackageStartupMessages(
 
 # -------------------------- Functions ----------------------------
 
-source("src/functions.R")
+source("/cluster/projects/nn9305k/vi_src/VAMPIR/src/functions.R")
 
 # -------------------------- Analysis ----------------------------
 
