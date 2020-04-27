@@ -10,7 +10,8 @@ args <- commandArgs(trailingOnly = TRUE)
 in_report_loc <- args[1]
 output_loc <- args[2]
 genes <- args[3]
-gyr_par_fix <- args[4]
+ending <- as.character(args[4])
+gyr_par_fix <- args[5]
 
 # adjust parameters for filtering
 if (grepl("all", genes, ignore.case = TRUE) == TRUE) {
@@ -27,7 +28,9 @@ packages <-
     "tidyr",
     "purrr",
     "stringr",
-    "impoRt"
+    "impoRt",
+    "vampfunc",
+    "funtools"
   )
 
 suppressPackageStartupMessages(
@@ -39,10 +42,6 @@ suppressPackageStartupMessages(
     warn.conflicts = FALSE
   ))))
 
-# -------------------------- Functions ----------------------------
-
-source("/cluster/projects/nn9305k/vi_src/VAMPIR/src/functions.R")
-
 # -------------------------- Analysis ----------------------------
 
 # Create output directory
@@ -52,9 +51,9 @@ amr_output <- paste0(output_loc, "/amr_in/")
 ## Intrinsic genes
 
 in_data <- get_data(in_report_loc,
-                    "amr_report.tsv",
+                    ending,
                     convert = TRUE) %>%
-  fix_gene_names()
+  fix_gene_names(ending)
 
 in_flags <- check_flags(in_data)
 
@@ -69,11 +68,13 @@ if (exists("gyr_par_fix") == TRUE) {
 if ("ALL" %in% genes) {
   in_table_filtered <- in_table
 } else {
-  in_table_filtered <- filter_table(in_table)
+  in_table_filtered <- filter_table(in_table, genes)
+  in_flags <- filter_table(in_flags, genes)
 }
 
 in_report <- create_report(in_table_filtered, mut = FALSE)
 in_mut_report <- create_report(in_table_filtered, mut = TRUE)
+
 in_stats <- calc_stats(in_table_filtered)
 
 ## Write results to file

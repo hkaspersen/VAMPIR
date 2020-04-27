@@ -10,6 +10,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 report_loc <- args[1]
 output_loc <- args[2]
+ending <- args[3]
 
 # ------------------------ Load libraries -------------------------
 

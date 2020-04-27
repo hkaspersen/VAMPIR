@@ -9,6 +9,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 report_loc <- args[1]
 output_loc <- args[2]
+ending <- as.character(args[3])
 
 # ------------------------ Load libraries -------------------------
 
@@ -17,7 +18,9 @@ packages <-
     "dplyr",
     "tidyr",
     "purrr",
-    "impoRt"
+    "impoRt",
+    "vampfunc",
+    "funtools"
   )
 
 invisible(lapply(packages, function(x)
@@ -28,10 +31,6 @@ invisible(lapply(packages, function(x)
     warn.conflicts = FALSE
   )))
 
-# -------------------------- Functions ----------------------------
-
-source("src/functions.R")
-
 # -------------------------- Analysis ----------------------------
 
 # Create output folder
@@ -39,9 +38,9 @@ dir.create(paste0(output_loc, "/plasmid/"), showWarnings = FALSE)
 plasmid_output <- paste0(output_loc, "/plasmid/")
 
 plasmid_data <- get_data(report_loc,
-                         "^report.tsv",
+                         ending,
                          convert = TRUE) %>%
-  fix_gene_names(plasmid = TRUE)
+  fix_gene_names(ending)
 
 plasmid_flags <- check_flags(plasmid_data)
 plasmid_table <- create_table(plasmid_data)

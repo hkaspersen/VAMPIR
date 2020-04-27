@@ -75,6 +75,10 @@ parser <- add_option(parser,
                      One folder for each analysis will be created
                      at given location.")
 parser <- add_option(parser,
+                     c("-f", "--fileending"),
+                     action = "store",
+                     help = "Ending suffix of result files from ARIBA.")
+parser <- add_option(parser,
                      "--version",
                      action = "store_true",
                      help = "Print version info.")
@@ -103,6 +107,9 @@ if (!is.null(opt$mut)) {
   if (is.null(opt$intrinsic)) {
     print("Please specify genes of interest with -i.")
     stop()
+  } else if (is.null(opt$fileending)) {
+    print("Please specify the file endings of input files with -f.")
+    stop()
   } else {
     print(paste0(
       "Running intrinsic AMR gene summary analysis. Reports location: ",
@@ -113,6 +120,7 @@ if (!is.null(opt$mut)) {
                opt$mut, 
                opt$out,
                opt$intrinsic,
+               opt$fileending,
                opt$gyrfix))
   }
 }
@@ -121,6 +129,9 @@ if (!is.null(opt$mut)) {
 if (!is.null(opt$acq)) {
   if (is.null(opt$acquired)) {
     print("Please specify genes of interest with -c.")
+    stop()
+  } else if (is.null(opt$fileending)) {
+    print("Please specify the file endings of input files with -f.")
     stop()
   } else {
     print(paste0(
@@ -131,7 +142,8 @@ if (!is.null(opt$acq)) {
   system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/acquired_script.R",
                opt$acq, 
                opt$out, 
-               opt$acquired))
+               opt$acquired,
+               opt$fileending))
   }
 }
 
@@ -139,11 +151,14 @@ if (!is.null(opt$acq)) {
 if (!is.null(opt$vir)) {
   if (is.null(opt$database)) {
     print("Please specify virulence database used: virfinder, vfdb or vfdb_core.")
-    quit()
+    stop()
   }
   if (is.null(opt$virgenes)) {
-    print("Please specify virulence genes.")
-    quit()
+    print("Please specify virulence genes with -r.")
+    stop()
+  } else if (is.null(opt$fileending)) {
+    print("Please specify the file endings of input files with -f.")
+    stop()
   } else {
     print(paste0(
       "Running virulence gene summary analysis. Reports location: ",
@@ -156,24 +171,35 @@ if (!is.null(opt$vir)) {
                  opt$vir,
                  opt$database,
                  opt$virgenes,
-                 opt$out)) 
+                 opt$out,
+                 opt$fileending)) 
   }
 }
 
 ## MLST track
 if (!is.null(opt$mlst)) {
-  print(paste0(
-    "Running MLST summary analysis. Reports location: ", 
-    normalizePath(opt$mlst, winslash = "/", mustWork = TRUE),
-    ". Output location: ",
-    normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
-  system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
-               opt$mlst,
-               opt$out))
+  if (is.null(opt$fileending)) {
+  print("Please specify the file endings of input files with -f.")
+  stop()
+  } else {
+    print(paste0(
+      "Running MLST summary analysis. Reports location: ", 
+      normalizePath(opt$mlst, winslash = "/", mustWork = TRUE),
+      ". Output location: ",
+      normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
+    system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/mlst_script.R",
+                 opt$mlst,
+                 opt$out,
+                 opt$fileending)) 
+  }
 }
 
 ## Plasmid typing track
 if (!is.null(opt$plasmid)) {
+  if (is.null(opt$fileending)) {
+    print("Please specify the file endings of input files with -f.")
+    stop()
+  } else {
   print(paste0(
     "Running plasmid summary analysis. Reports location: ",
     normalizePath(opt$plasmid, winslash = "/", mustWork = TRUE),
@@ -181,5 +207,7 @@ if (!is.null(opt$plasmid)) {
     normalizePath(opt$out, winslash = "/", mustWork = TRUE)))
   system(paste("Rscript /cluster/projects/nn9305k/vi_src/VAMPIR/src/plasmid_script.R",
                opt$plasmid,
-               opt$out))
+               opt$out,
+               opt$fileending))
+  }
 }

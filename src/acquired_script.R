@@ -10,6 +10,7 @@ args <- commandArgs(trailingOnly = TRUE)
 ac_report_loc <- args[1]
 output_loc <- args[2]
 genes <- args[3]
+ending <- as.character(args[4])
 
 # adjust parameters for filtering
 if (grepl("all", genes, ignore.case = TRUE) == TRUE) {
@@ -26,7 +27,9 @@ packages <-
     "tidyr",
     "stringr",
     "knitr",
-    "impoRt"
+    "impoRt",
+    "vampfunc",
+    "funtools"
   )
 
 invisible(lapply(packages, function(x)
@@ -37,10 +40,6 @@ invisible(lapply(packages, function(x)
     warn.conflicts = FALSE
   )))
 
-# -------------------------- Functions ----------------------------
-
-source("/cluster/projects/nn9305k/vi_src/VAMPIR/src/functions.R")
-
 # -------------------------- Analysis ----------------------------
 
 # Create output directory
@@ -48,9 +47,9 @@ dir.create(paste0(output_loc, "/amr_ac/"), showWarnings = FALSE)
 amr_output <- paste0(output_loc, "/amr_ac/")
 
 ac_data <- get_data(ac_report_loc,
-                    "amr_report.tsv",
+                    ending,
                     convert = TRUE) %>%
-  fix_gene_names()
+  fix_gene_names(ending)
 
 ac_flags <- check_flags(ac_data)
 
@@ -59,7 +58,8 @@ ac_table <- create_table(ac_data)
 if ("ALL" %in% genes) {
   ac_table_filtered <- ac_table
 } else {
-  ac_table_filtered <- filter_table(ac_table)
+  ac_table_filtered <- filter_table(ac_table, genes)
+  ac_flags <- filter_table(ac_flags, genes)
 }
 
 ac_report <- create_report(ac_table_filtered)
@@ -71,19 +71,22 @@ write.table(
   ac_report,
   paste0(amr_output, "acquired_gene_report.tsv"),
   sep = "\t",
-  row.names = FALSE
+  row.names = FALSE,
+  quote = FALSE
 )
 
 write.table(
   ac_flags,
   paste0(amr_output, "acquired_flag_report.tsv"),
   sep = "\t",
-  row.names = FALSE
+  row.names = FALSE,
+  quote = FALSE
 )
 
 write.table(
   ac_stats,
   paste0(amr_output, "acquired_gene_stats.tsv"),
   sep = "\t",
-  row.names = FALSE
+  row.names = FALSE,
+  quote = FALSE
 )

@@ -11,6 +11,7 @@ report_loc <- args[1]
 vir_database <- args[2]
 vir_genes <- args[3]
 output_loc <- args[4]
+ending <- as.character(args[5])
 
 # adjust parameters for filtering
 if (grepl("all", vir_genes, ignore.case = TRUE) == TRUE) {
@@ -26,7 +27,9 @@ packages <-
     "dplyr",
     "tidyr",
     "purrr",
-    "impoRt"
+    "impoRt",
+    "vampfunc",
+    "funtools"
   )
 
 invisible(lapply(packages, function(x)
@@ -271,7 +274,7 @@ vir_output <- paste0(output_loc, "/vir/")
 if (vir_database == "virfinder") {
   # import data
   vir_data <- get_data(report_loc,
-                       "vir_report.tsv",
+                       ending,
                        convert = TRUE)
   
   clean_vir_data <- fix_virfinder_names(vir_data)
