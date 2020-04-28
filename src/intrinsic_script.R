@@ -53,9 +53,20 @@ amr_output <- paste0(output_loc, "/amr_in/")
 in_data <- get_data(in_report_loc,
                     ending,
                     convert = TRUE) %>%
-  fix_gene_names(ending)
+  fix_gene_names(ending, db = "res")
 
 in_flags <- check_flags(in_data)
+
+write.table(in_flags,
+            paste0(amr_output, "intrinsic_flag_report.tsv"),
+            sep = "\t",
+            row.names = FALSE,
+            quote = FALSE)
+
+if (all(in_flags$flag_result == 0) == TRUE) {
+  print("No flags accepted, please check the flag report")
+  stop()
+}
 
 in_table <- create_table(in_data, acquired = FALSE)
 
@@ -87,12 +98,6 @@ write.table(in_report,
 
 write.table(in_mut_report,
             paste0(amr_output, "intrinsic_mut_report.tsv"),
-            sep = "\t",
-            row.names = FALSE,
-            quote = FALSE)
-
-write.table(in_flags,
-            paste0(amr_output, "intrinsic_flag_report.tsv"),
             sep = "\t",
             row.names = FALSE,
             quote = FALSE)

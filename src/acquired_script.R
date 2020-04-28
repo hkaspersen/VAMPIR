@@ -49,9 +49,22 @@ amr_output <- paste0(output_loc, "/amr_ac/")
 ac_data <- get_data(ac_report_loc,
                     ending,
                     convert = TRUE) %>%
-  fix_gene_names(ending)
+  fix_gene_names(ending, db = "res")
 
 ac_flags <- check_flags(ac_data)
+
+write.table(
+  ac_flags,
+  paste0(amr_output, "acquired_flag_report.tsv"),
+  sep = "\t",
+  row.names = FALSE,
+  quote = FALSE
+)
+
+if (all(ac_flags$flag_result == 0) == TRUE) {
+  print("No flags accepted, please check the flag report")
+  stop()
+}
 
 ac_table <- create_table(ac_data)
 
@@ -70,14 +83,6 @@ ac_stats <- calc_stats(ac_table_filtered)
 write.table(
   ac_report,
   paste0(amr_output, "acquired_gene_report.tsv"),
-  sep = "\t",
-  row.names = FALSE,
-  quote = FALSE
-)
-
-write.table(
-  ac_flags,
-  paste0(amr_output, "acquired_flag_report.tsv"),
   sep = "\t",
   row.names = FALSE,
   quote = FALSE
