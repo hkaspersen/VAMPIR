@@ -16,18 +16,14 @@ ending <- args[3]
 
 packages <-
   c(
-    "ggplot2",
     "dplyr",
     "tidyr",
-    "stringr",
-    "svglite",
-    "phangorn",
     "ggtree",
     "tibble",
-    "purrr",
-    "cluster",
     "ape",
-    "impoRt"
+    "impoRt",
+    "distanceR",
+    "vampfunc"
   )
 
 invisible(lapply(packages, function(x)
@@ -47,58 +43,42 @@ mlst_output <- paste0(output_loc, "/mlst/")
 
 # Import and analyse data
 mlst_data <- get_data(report_loc,
-                      "mlst_summarized_results.tsv",
+                      ending,
                       convert = TRUE) %>%
   select(-ref)
 
-mlst_genes <- unlist(strsplit(names(mlst_data)[-1],
-                              split = " ",
-                              fixed = TRUE))
+perc_ST <- percent_presence(mlst_data, "ST")
 
-mlst_genes <- mlst_genes[-1]
-
-split_column <- names(mlst_data)[2]
-
-allele_matrix <- suppressWarnings(mlst_data %>%
-  mutate_at(vars(-1),
-            list(trimws)) %>%
-  tidyr::separate(split_column, into = mlst_genes, extra = "merge") %>%
-  rename("ref" = header) %>%
-  { . ->> mlst_report } %>%
+allele_matrix <- mlst_data %>%
   select(-ST) %>%
-  mutate_at(vars(-ref),
-            list(sub("*", "", .))) %>%
-  mutate_at(vars(-ref),
-            list(as.integer(.))) %>% 
-  mutate(test = complete.cases(.)) %>%
-  filter(test == TRUE) %>%
-  select(-test) %>%
-  column_to_rownames("ref"))
+  mutate_at(vars(-header),
+            ~as.factor(as.character(.))) %>%
+  column_to_rownames("header")
 
 # Calculate distance matrix from sequence typing alleles and create tree
-tree <- as.phylo(hclust(daisy(allele_matrix,
-                              metric = "gower"),
-                        method = "average"))
+tree <- calc_dist(allele_matrix)
 
-tree$tip.label <- rownames(allele_matrix)
-
-p <- suppressWarnings(ggtree(tree) +
-  geom_treescale() +
-  geom_tiplab(size = 1,
-              align = TRUE))
+p <- plot_tree(tree)
 
 # Save output
-ggsave(paste0(mlst_output, "mlst_tree.svg"),
+ggsave(paste0(mlst_output, "mlst_tree.png"),
        p,
-       device = "svg",
+       device = "png",
        dpi = 300,
-       height = 30,
-       width = 25,
+       height = 20,
+       width = 22,
        units = "cm")
 
 write.table(mlst_report,
             paste0(mlst_output, "mlst_report.tsv"),
             sep = "\t",
-            row.names = FALSE)
+            row.names = FALSE,
+            quote = FALSE)
+
+write.table(perc_ST,
+            paste0(mlst_output, "mlst_percent.tsv"),
+            sep = "\t",
+            row.names = FALSE,
+            quote = FALSE)
 
 write.tree(phy = tree, file = paste0(mlst_output,"mlst_tree.newick"))
