@@ -7,18 +7,7 @@ settings.
 
 Author: Håkon Kaspersen, Norwegian Veterinary Institute
 
-# Usage
-Make sure that your .Rprofile file have the correct library path before 
-beginning. The .Rprofile file is located in your home folder, and you 
-get there by typing cd. Type in nano .Rprofile, and paste in the 
-following:
-
-```
-path <- "/cluster/projects/nn9305k/lib/R/"
-
-.libPaths(c(path, .libPaths()))
-```
-## Dependencies
+# Dependencies
 Non-CRAN packages:
 
 - vampfunc package (https://github.com/hkaspersen/vampfunc)
@@ -37,6 +26,17 @@ ggtree, ape
 
 If not on SAGA, you need to change the paths to the executable scripts in the VAMPIR.R file.
 
+# Usage
+Make sure that your .Rprofile file have the correct library path before 
+beginning. The .Rprofile file is located in your home folder, and you 
+get there by typing cd. Type in nano .Rprofile, and paste in the 
+following:
+
+```
+path <- "/cluster/projects/nn9305k/lib/R/"
+
+.libPaths(c(path, .libPaths()))
+```
 
 Usage:
 
