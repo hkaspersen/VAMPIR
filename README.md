@@ -18,8 +18,24 @@ path <- "/cluster/projects/nn9305k/lib/R/"
 
 .libPaths(c(path, .libPaths()))
 ```
-If you are not on SAGA, make sure you also have installed the "vampfunc" package in R: https://github.com/hkaspersen/vampfunc.
-Also, if not on SAGA, you need to change the paths to the executable scripts in the VAMPIR.R file.
+## Dependencies
+Non-CRAN packages:
+
+- vampfunc package (https://github.com/hkaspersen/vampfunc)
+
+- distanceR package (https://github.com/hkaspersen/distanceR)
+
+- funtools package (https://github.com/hkaspersen/funtools)
+
+- impoRt package (https://github.com/hkaspersen/impoRt)
+
+CRAN packages:
+dplyr, tidyr, tibble, optparse, purrr, reprex, stringr, knitr
+
+Bioconductor packages:
+ggtree, ape
+
+If not on SAGA, you need to change the paths to the executable scripts in the VAMPIR.R file.
 
 
 Usage:
@@ -74,7 +90,7 @@ Options:
                 Type 'all' for including all reported genes.
 
         -d DATABASE, --database=DATABASE
-                Virulence database used: virfinder, vfdb, or vfdb_core
+                Virulence database used: virfinder or vfdb
 
         -m MLST, --mlst=MLST
                 Directory of ARIBA MLST reports.
@@ -137,17 +153,10 @@ statistics of the respective analysis type. It presents the percentage
 of isolates where the given gene is present, as well as a 95 % 
 confidence interval.
 
-- **virulence_detailed_report.txt**: A tab separated text file 
-containing the specific sub types of virulence genes, rather than the grouped 
-virulence genes in virulence_summary_report.txt.
-
-- **virulence_summary_report.txt**: A tab separated text file containing 
-the grouped virulence gene results.
-
 - **intrinsic_mut_report.txt**: A tab separated text file containing the 
 detailed mutations found in specified intrinsic genes.
 
-- **mlst_tree.svg**: A figure presenting the phylogenetic tree based on 
+- **mlst_tree.png**: A figure presenting the phylogenetic tree based on 
 allele distances.
 
 - **mlst_tree.newick**: A newick-format phylogenetic tree based on 
