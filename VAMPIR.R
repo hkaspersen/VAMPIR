@@ -59,7 +59,7 @@ parser <- add_option(parser,
 parser <- add_option(parser,
                      c("-d", "--database"),
                      action = "store",
-                     help = "Virulence database used: virfinder, vfdb, vfdb_core or virfinder_dtu (not ARIBA)")
+                     help = "Virulence database used: virfinder or vfdb")
 parser <- add_option(parser,
                      c("-m", "--mlst"),
                      action = "store",
