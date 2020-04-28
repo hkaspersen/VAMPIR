@@ -110,8 +110,7 @@ gives reports based on which genes are specified by the user in -c.
 - **Virulence gene analysis** (-v, database: -d, genes: -r)
 	+ This track analyses virulence reports from ARIBA and gives a 
 summary report and a detailed report on which virulence genes were 
-found. Note that only detailed reports will be generated when
-specifying the vfdb or vfdb_core databases.
+found.
 
 - **Multilocus sequence typing analysis** (-m)
 	+ This track takes summary reports on MLST from ARIBA and gives 
