@@ -41,7 +41,7 @@ path <- "/cluster/projects/nn9305k/lib/R/"
 Usage:
 
 ```
-module load R/3.6.0-foss-2019a
+module load R/4.0.0-foss-2020a
 
 Rscript VAMPIR.R [options] -o output_folder
 ```
